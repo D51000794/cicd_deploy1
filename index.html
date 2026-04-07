@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CI/CD Per-Environment Banner App - GAR Build Pipeline</title>
+<title>PHASE1: CI/CD Pipeline & Release Management — Integrated Whiteboard</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -30,14 +30,26 @@
   }
 }
 body{font-family:var(--font-sans);background:var(--color-background-secondary);color:var(--color-text-primary);padding:20px 16px;min-height:100vh}
-.page-header{margin-bottom:18px}
-.page-header h1{font-size:17px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+
+/* ── Page header ── */
+.page-header{margin-bottom:20px}
+.page-header h1{font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
 .page-header p{font-size:11px;color:var(--color-text-tertiary);line-height:1.5}
-.wb{padding:16px;border-radius:var(--border-radius-lg)}
+
+/* ── Top-level section switcher ── */
+.section-switcher{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:12px}
+.ss-btn{font-size:12px;font-weight:500;padding:6px 16px;border-radius:8px;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:transparent;transition:all .15s;font-family:var(--font-sans)}
+.ss-btn.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.ss-section{display:none}.ss-section.active{display:block}
+
+/* ── Pipeline tab bar ── */
+.wb{padding:0;border-radius:var(--border-radius-lg)}
 .tab-bar{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
 .tab{font-size:11px;padding:4px 11px;border-radius:6px;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:transparent;transition:all .12s;font-family:var(--font-sans)}
 .tab.active{background:var(--color-background-secondary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-secondary)}
 .tp{display:none}.tp.active{display:block}
+
+/* ── Pipeline lanes ── */
 .lane{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px;margin-bottom:7px;background:var(--color-background-primary)}
 .lt{font-size:10.5px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:5px}
 .ld{width:7px;height:7px;border-radius:50%;flex-shrink:0}
@@ -49,6 +61,8 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
 .bx .s{font-size:8.5px;line-height:1.3;margin-top:1px}
 .ar{display:flex;align-items:center;color:var(--color-text-tertiary);font-size:13px;padding:0 2px;flex-shrink:0;user-select:none}
 .ar.rb{color:#D85A30;font-size:10px}
+
+/* ── Badges ── */
 .bdg{display:inline-block;font-size:8px;font-weight:500;padding:1px 4px;border-radius:3px;margin-top:2px;line-height:1.4}
 .b-a{background:#C0DD97;color:#27500A}
 .b-r{background:#FAC775;color:#633806}
@@ -58,6 +72,8 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
 .b-rb{background:#F5C4B3;color:#712B13}
 .b-sn{background:#B5D4F4;color:#0C447C}
 .b-skip{background:#D3D1C7;color:#444441}
+
+/* ── Node colour classes ── */
 .c-dev{background:#E6F1FB;border-color:#185FA5;color:#0C447C}.c-dev .s{color:#185FA5}
 .c-bld{background:#EEEDFE;border-color:#534AB7;color:#3C3489}.c-bld .s{color:#534AB7}
 .c-gar{background:#FBEAF0;border-color:#993556;color:#72243E}.c-gar .s{color:#993556}
@@ -88,6 +104,8 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   .c-feat{background:#2C2C2A;border-color:#888780;color:#D3D1C7}.c-feat .s{color:#B4B2A9}
   .c-pr{background:#4B1528;border-color:#D4537E;color:#F4C0D1}.c-pr .s{color:#ED93B1}
 }
+
+/* ── Dividers / env headers / key bar ── */
 .div{display:flex;align-items:center;gap:8px;margin:2px 0 5px;font-size:9px;color:var(--color-text-tertiary)}
 .div::before,.div::after{content:'';flex:1;height:0.5px;background:var(--color-border-tertiary)}
 .key{display:flex;flex-wrap:wrap;gap:6px;padding:8px 11px;background:var(--color-background-secondary);border-radius:8px;margin-bottom:10px;align-items:center}
@@ -97,12 +115,39 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
 .p-hrn{background:#EEEDFE;border-color:#534AB7;color:#3C3489}
 .p-sn{background:#E6F1FB;border-color:#185FA5;color:#042C53}
 .p-skip{background:#F1EFE8;border-color:#888780;color:#444441}
+.p-purple{background:#EEEDFE;border-color:#534AB7;color:#3C3489}
+.p-teal{background:#E1F5EE;border-color:#0F6E56;color:#085041}
+.p-amber{background:#FAEEDA;border-color:#854F0B;color:#633806}
+.p-blue{background:#E6F1FB;border-color:#185FA5;color:#0C447C}
+.p-coral{background:#FAECE7;border-color:#993C1D;color:#712B13}
+.p-gray{background:#F1EFE8;border-color:#5F5E5A;color:#444441}
 @media(prefers-color-scheme:dark){
   .p-son{background:#4A1B0C;border-color:#D85A30;color:#F5C4B3}
   .p-hrn{background:#26215C;border-color:#AFA9EC;color:#CECBF6}
   .p-sn{background:#042C53;border-color:#378ADD;color:#B5D4F4}
   .p-skip{background:#2C2C2A;border-color:#888780;color:#D3D1C7}
+  .p-purple{background:#26215C;border-color:#AFA9EC;color:#CECBF6}
+  .p-teal{background:#04342C;border-color:#1D9E75;color:#9FE1CB}
+  .p-amber{background:#412402;border-color:#EF9F27;color:#FAC775}
+  .p-blue{background:#042C53;border-color:#378ADD;color:#B5D4F4}
+  .p-coral{background:#4A1B0C;border-color:#D85A30;color:#F5C4B3}
+  .p-gray{background:#2C2C2A;border-color:#888780;color:#D3D1C7}
 }
+
+.env-header{display:flex;align-items:center;gap:8px;margin:6px 0 4px}
+.env-badge{font-size:9px;font-weight:500;padding:2px 8px;border-radius:4px;border:0.5px solid}
+.eb-feat{background:#F1EFE8;border-color:#888780;color:#444441}
+.eb-dev{background:#E1F5EE;border-color:#0F6E56;color:#085041}
+.eb-qa{background:#FAEEDA;border-color:#854F0B;color:#633806}
+.eb-prod{background:#FAECE7;border-color:#D85A30;color:#4A1B0C}
+@media(prefers-color-scheme:dark){
+  .eb-feat{background:#2C2C2A;border-color:#888780;color:#D3D1C7}
+  .eb-dev{background:#04342C;border-color:#1D9E75;color:#9FE1CB}
+  .eb-qa{background:#412402;border-color:#BA7517;color:#FAC775}
+  .eb-prod{background:#4A1B0C;border-color:#D85A30;color:#F5C4B3}
+}
+
+/* ── Shared card/detail styles ── */
 .panel{display:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:12px 14px;margin-top:8px;background:var(--color-background-primary)}
 .panel.open{display:block}
 .panel h3{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px}
@@ -111,9 +156,6 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
 .dd{font-size:10.5px;color:var(--color-text-secondary);line-height:1.55}
 .cls{float:right;font-size:10px;color:var(--color-text-tertiary);cursor:pointer;padding:0 3px}
 .cls:hover{color:var(--color-text-primary)}
-.leg{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.li{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--color-text-secondary)}
-.lc{width:7px;height:7px;border-radius:2px;border:0.5px solid;flex-shrink:0}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 @media(max-width:560px){.two{grid-template-columns:1fr}}
 .card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px;background:var(--color-background-primary)}
@@ -137,27 +179,72 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
 .br-name{font-size:10.5px;font-weight:500;color:var(--color-text-primary)}
 .br-desc{font-size:9.5px;color:var(--color-text-secondary);margin-top:1px}
 .br-arrow{font-size:10px;color:var(--color-text-tertiary);margin:2px 0 2px 15px}
-.env-header{display:flex;align-items:center;gap:8px;margin:6px 0 4px}
-.env-badge{font-size:9px;font-weight:500;padding:2px 8px;border-radius:4px;border:0.5px solid}
-.eb-feat{background:#F1EFE8;border-color:#888780;color:#444441}
-.eb-dev{background:#E1F5EE;border-color:#0F6E56;color:#085041}
-.eb-qa{background:#FAEEDA;border-color:#854F0B;color:#633806}
-.eb-prod{background:#FAECE7;border-color:#D85A30;color:#4A1B0C}
+.leg{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.li{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--color-text-secondary)}
+.lc{width:7px;height:7px;border-radius:2px;border:0.5px solid;flex-shrink:0}
+
+/* ── Release Management section styles ── */
+.rm-section{margin-bottom:20px}
+.rm-section-title{font-size:11px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media(max-width:600px){.grid-3,.grid-4{grid-template-columns:1fr}}
+.coloured-card{border-radius:var(--border-radius-lg);padding:12px 14px;cursor:pointer;transition:opacity .12s;border:0.5px solid}
+.coloured-card:hover{opacity:.85}
+.cc-purple{background:#EEEDFE;border-color:#534AB7}.cc-purple .card-title{color:#3C3489}.cc-purple .card-body{color:#534AB7}
+.cc-teal{background:#E1F5EE;border-color:#0F6E56}.cc-teal .card-title{color:#085041}.cc-teal .card-body{color:#0F6E56}
+.cc-amber{background:#FAEEDA;border-color:#854F0B}.cc-amber .card-title{color:#633806}.cc-amber .card-body{color:#854F0B}
+.cc-blue{background:#E6F1FB;border-color:#185FA5}.cc-blue .card-title{color:#0C447C}.cc-blue .card-body{color:#185FA5}
+.cc-coral{background:#FAECE7;border-color:#993C1D}.cc-coral .card-title{color:#4A1B0C}.cc-coral .card-body{color:#993C1D}
+.cc-gray{background:#F1EFE8;border-color:#5F5E5A}.cc-gray .card-title{color:#444441}.cc-gray .card-body{color:#5F5E5A}
 @media(prefers-color-scheme:dark){
-  .eb-feat{background:#2C2C2A;border-color:#888780;color:#D3D1C7}
-  .eb-dev{background:#04342C;border-color:#1D9E75;color:#9FE1CB}
-  .eb-qa{background:#412402;border-color:#BA7517;color:#FAC775}
-  .eb-prod{background:#4A1B0C;border-color:#D85A30;color:#F5C4B3}
+  .cc-purple{background:#26215C;border-color:#AFA9EC}.cc-purple .card-title{color:#CECBF6}.cc-purple .card-body{color:#AFA9EC}
+  .cc-teal{background:#04342C;border-color:#1D9E75}.cc-teal .card-title{color:#9FE1CB}.cc-teal .card-body{color:#5DCAA5}
+  .cc-amber{background:#412402;border-color:#EF9F27}.cc-amber .card-title{color:#FAC775}.cc-amber .card-body{color:#EF9F27}
+  .cc-blue{background:#042C53;border-color:#378ADD}.cc-blue .card-title{color:#B5D4F4}.cc-blue .card-body{color:#85B7EB}
+  .cc-coral{background:#4A1B0C;border-color:#D85A30}.cc-coral .card-title{color:#F5C4B3}.cc-coral .card-body{color:#F0997B}
+  .cc-gray{background:#2C2C2A;border-color:#888780}.cc-gray .card-title{color:#D3D1C7}.cc-gray .card-body{color:#B4B2A9}
 }
+.card-title{font-size:11.5px;font-weight:500;color:var(--color-text-primary);margin-bottom:5px}
+.card-body{font-size:10.5px;color:var(--color-text-secondary);line-height:1.55}
+.accent-card{border-left:3px solid;border-radius:0;border-top:none;border-right:none;border-bottom:none;padding:10px 12px;background:var(--color-background-secondary);margin-bottom:8px;cursor:pointer;transition:background .12s}
+.accent-card:hover{background:var(--color-background-primary)}
+.accent-card .card-title{font-size:11px}
+.accent-card .card-body{font-size:10px}
+.integration-band{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;background:var(--color-background-secondary);margin-bottom:12px}
+.ib-title{font-size:11px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.flow-row{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:2px;margin-bottom:10px}
+.flow-node{flex-shrink:0;border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:8px 11px;background:var(--color-background-primary);min-width:110px;cursor:pointer;transition:all .12s}
+.flow-node:hover{border-color:var(--color-border-secondary);background:var(--color-background-secondary)}
+.flow-node .fn-title{font-size:10.5px;font-weight:500;color:var(--color-text-primary);line-height:1.3}
+.flow-node .fn-sub{font-size:9px;color:var(--color-text-tertiary);margin-top:2px;line-height:1.3}
+.flow-arr{display:flex;align-items:center;padding:0 4px;color:var(--color-text-tertiary);font-size:14px;flex-shrink:0;user-select:none}
+.takeaway-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:8px}
+@media(max-width:500px){.takeaway-row{grid-template-columns:1fr}}
+.tk-card{border-radius:var(--border-radius-md);padding:10px 12px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary)}
+.tk-label{font-size:9px;font-weight:500;padding:2px 7px;border-radius:12px;display:inline-block;margin-bottom:5px}
+.tk-title{font-size:11px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.tk-body{font-size:10px;color:var(--color-text-secondary);line-height:1.5}
 </style>
 </head>
 <body>
 
 <div class="page-header">
-  <h1>PHASE1: CI/CD App Deployments - Per-Environment GAR Build Pipeline</h1>
-  <p>feat/* (no Sonar/build/deploy) · DEV build → GAR-DEV · QA build → GAR-QA · PROD build → GAR-PROD · SonarQube gates DEV/QA/PROD · Harness OPA (PROD only) · ServiceNow INC + email on gate failure · GitHub Rulesets · Rollback per env</p>
+  <h1>PHASE1: CI/CD Pipeline &amp; Release Management — Integrated Whiteboard</h1>
+  <p>App deployments · Per-environment GAR builds · SonarQube gates · Harness OPA (PROD) · ServiceNow INC · GitHub Rulesets · Release Management integration · Governance &amp; compliance</p>
 </div>
 
+<!-- ── TOP-LEVEL SECTION SWITCHER ── -->
+<div class="section-switcher">
+  <button class="ss-btn active" onclick="showSection('pipeline', this)">CI/CD Pipeline</button>
+  <button class="ss-btn" onclick="showSection('release-mgmt', this)">Release Management &amp; Harness</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1: CI/CD PIPELINE
+══════════════════════════════════════════ -->
+<div id="section-pipeline" class="ss-section active">
 <div class="wb">
 <div class="tab-bar">
   <button class="tab active" onclick="st('pipeline',this)">Pipeline</button>
@@ -167,7 +254,7 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   <button class="tab" onclick="st('harness',this)">Harness policies</button>
 </div>
 
-<!-- ===== PIPELINE ===== -->
+<!-- ── PIPELINE TAB ── -->
 <div id="tab-pipeline" class="tp active">
 <div class="key">
   <span class="kl">Key:</span>
@@ -208,7 +295,6 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
     <div class="ar">→</div>
     <div class="nd" onclick="d('dev-sonar')"><div class="bx c-son" style="min-width:82px"><div class="t">SQ scan/Semgrep</div><div class="s">Unit test</div><div class="bdg b-x">fail = email</div></div></div>
     <div class="ar">→</div>
-    <div class="ar">→</div>
     <div class="nd" onclick="d('dev-build')"><div class="bx c-bld" style="min-width:78px"><div class="t">Build DEV package</div><div class="s">Docker image + SBOM</div></div></div>
     <div class="ar">→</div>
     <div class="nd" onclick="d('dev-img-scan')"><div class="bx c-tst" style="min-width:76px"><div class="t">Container scan</div><div class="s">Trivy / Aqua</div></div></div>
@@ -217,7 +303,7 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
     <div class="ar">→</div>
     <div class="nd" onclick="d('dev-deploy')"><div class="bx c-dep" style="min-width:76px"><div class="t">Deploy DEV</div><div class="s">K8s rolling · auto</div><div class="bdg b-a">AUTO</div></div></div>
     <div class="ar">→</div>
-    <div class="nd" onclick="d('dev-tests')"><div class="bx c-tst" style="min-width:76px"><div class="t">Smoke</div><div class="s">Health + E2E</div></div></div>
+    <div class="nd" onclick="d('dev-tests')"><div class="bx c-tst" style="min-width:76px"><div class="t">Smoke tests</div><div class="s">Health + E2E</div></div></div>
     <div class="ar">→</div>
     <div class="nd" onclick="d('dev-gate')"><div class="bx c-gat" style="min-width:76px"><div class="t">DEV gate</div><div class="s">Pass → PR to QA</div></div></div>
     <div class="ar rb">⟲</div>
@@ -233,7 +319,7 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
     <div class="ar">→</div>
     <div class="nd" onclick="d('qa-gh-rule')"><div class="bx c-gh" style="min-width:78px"><div class="t">GitHub Ruleset</div><div class="s">qa/* protection</div><div class="bdg b-g">checks enforced</div></div></div>
     <div class="ar">→</div>
-    <div class="nd" onclick="d('qa-sonar')"><div class="bx c-son" style="min-width:80px"><div class="t">SQ scan/Semgrep</div><div class="s">NO SNOW INC TICKET CREATED</div><div class="s">QA branch full scan</div><div class="bdg b-x">fail = email</div></div></div>
+    <div class="nd" onclick="d('qa-sonar')"><div class="bx c-son" style="min-width:80px"><div class="t">SQ scan/Semgrep</div><div class="s">QA branch full scan</div><div class="bdg b-x">fail = email only</div></div></div>
     <div class="ar">→</div>
     <div class="nd" onclick="d('qa-build')"><div class="bx c-bld" style="min-width:76px"><div class="t">Build QA package</div><div class="s">New image for QA</div></div></div>
     <div class="ar">→</div>
@@ -271,7 +357,7 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
     <div class="ar">→</div>
     <div class="nd" onclick="d('prod-opa3')"><div class="bx c-hrn" style="min-width:78px"><div class="t">OPA: window</div><div class="s">Mon–Thu 10–15 UTC</div><div class="bdg b-h">enforced</div></div></div>
     <div class="ar">→</div>
-    <div class="nd" onclick="d('prod-approval')"><div class="bx c-gat" style="min-width:78px"><div class="t">Prod approval</div><div class="s">Change mgmt</div><div class="bdg b-r">1 approvers</div></div></div>
+    <div class="nd" onclick="d('prod-approval')"><div class="bx c-gat" style="min-width:78px"><div class="t">Prod approval</div><div class="s">Change mgmt</div><div class="bdg b-r">1 approver</div></div></div>
     <div class="ar">→</div>
     <div class="nd" onclick="d('prod-canary')"><div class="bx c-dep" style="min-width:76px"><div class="t">Canary deploy</div><div class="s">5%→25%→100%</div></div></div>
     <div class="ar">→</div>
@@ -283,14 +369,14 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
 
 <div class="alert-box" onclick="d('snow-detail')">
   <div class="ai">i</div>
-  <div class="at"><strong>ServiceNow INC + email on SonarQube gate failure:</strong> Any gate failure at PROD build automatically raises a ServiceNow INC and sends email to the app team. Feature branches(Dev, Qa) are excluded — no SonarQube runs on feat/*. Pipeline blocked until gate passes. Click for full detail.</div>
+  <div class="at"><strong>ServiceNow INC + email:</strong> PROD SonarQube gate failure auto-raises a P1 INC + email. DEV/QA failures send email only (no INC). Feature branches excluded entirely. Click for full detail.</div>
 </div>
-</div>
+</div><!-- /tab-pipeline -->
 
-<!-- ===== ROLLBACK ===== -->
+<!-- ── ROLLBACK TAB ── -->
 <div id="tab-rollback" class="tp">
 <div style="font-size:10.5px;color:var(--color-text-secondary);margin-bottom:10px;line-height:1.6">
-  Each environment has its own build and its own GAR image. A failure at any environment rolls back to the <strong style="color:var(--color-text-primary);font-size:10.5px">previous image in that environment's GAR repo</strong>, then the fix goes back to <strong style="color:var(--color-text-primary);font-size:10.5px">the dev branch</strong>, a new DEV package is built, the fix flows through DEV → PR to QA → QA build → PR to PROD → PROD build. All notifications via <strong style="color:var(--color-text-primary);font-size:10.5px">ServiceNow INC + email only</strong>.
+  Each environment has its own build and its own GAR image. A failure rolls back to the <strong style="color:var(--color-text-primary)">previous image in that env's GAR repo</strong>, then the fix goes back to <strong style="color:var(--color-text-primary)">dev branch</strong> and flows through DEV → QA → PROD. All notifications via <strong style="color:var(--color-text-primary)">ServiceNow INC + email only</strong>.
 </div>
 <div class="lane">
   <div class="lt"><span class="ld" style="background:#D85A30"></span>Rollback + fix cycle — applies to DEV, QA, and PROD</div>
@@ -315,32 +401,28 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   </div>
 </div>
 <div class="two" style="margin-top:9px">
-  <div class="card">
-    <div class="ct">DEV rollback</div>
+  <div class="card"><div class="ct">DEV rollback</div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Trigger:</strong> Smoke test or health check failure after DEV deploy</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Action:</strong> Harness rollback to previous GAR-DEV image digest</div></div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>Notify:</strong> ServiceNow P3 INC auto-raised + email to app team</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>Notify:</strong> ServiceNow P3 INC + email to app team</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Fix:</strong> Developer creates fix/* branch, PR to dev branch</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Result:</strong> New DEV build triggered → new image pushed to GAR-DEV</div></div>
   </div>
-  <div class="card">
-    <div class="ct">QA rollback</div>
+  <div class="card"><div class="ct">QA rollback</div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Trigger:</strong> Regression or perf failure, or QA lead rejects</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Action:</strong> Harness rolls back to previous GAR-QA image</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Notify:</strong> ServiceNow P2 INC + email to app team and QA lead</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Fix:</strong> Fix goes back to dev → new DEV build → new PR to QA → new QA build</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Gate:</strong> QA lead approval required again on re-deploy</div></div>
   </div>
-  <div class="card">
-    <div class="ct">PROD rollback</div>
+  <div class="card"><div class="ct">PROD rollback</div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Trigger:</strong> Canary error rate breach, p99 spike, failed verify step</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Action:</strong> Harness rollback to previous GAR-PROD image digest</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Notify:</strong> ServiceNow P1 INC + email to Eng lead, app team, Change mgmt</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Fix:</strong> Full cycle — fix in dev → DEV build → QA build → PROD build</div></div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>Approvals:</strong> Fresh 2-of-2 approval required for every new PROD deploy</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>Approvals:</strong> Fresh approval required for every new PROD deploy</div></div>
   </div>
-  <div class="card">
-    <div class="ct">GAR per-environment image management</div>
+  <div class="card"><div class="ct">GAR per-environment image management</div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>GAR-DEV:</strong> Images built on merge to dev — tag dev-vX.Y-gitsha</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>GAR-QA:</strong> Images built on PR merge to qa branch — tag qa-vX.Y-gitsha</div></div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>GAR-PROD:</strong> Images built on PR merge to main — tag prod-vX.Y-gitsha</div></div>
@@ -348,9 +430,9 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Quarantine:</strong> Failed images tagged quarantine:true in GAR metadata</div></div>
   </div>
 </div>
-</div>
+</div><!-- /tab-rollback -->
 
-<!-- ===== BRANCHING ===== -->
+<!-- ── BRANCHING TAB ── -->
 <div id="tab-branching" class="tp">
 <div class="two">
 <div>
@@ -361,7 +443,7 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   <div class="br-arrow">↑ PR from dev branch (after DEV gate pass)</div>
   <div class="br-node" onclick="d('b-dev')"><span class="br-dot" style="background:#185FA5"></span><div><div class="br-name">dev</div><div class="br-desc">DEV integration — protected · triggers DEV build + GAR-DEV · SonarQube runs here</div></div></div>
   <div class="br-arrow">↑ PRs from feat/* and fix/* branches</div>
-  <div class="br-node" onclick="d('b-feat')"><span class="br-dot" style="background:#888780"></span><div><div class="br-name">feat/*Branch</div><div class="br-desc">Feature work — no Sonar · no build · no deploy · PR to dev when ready</div></div></div>
+  <div class="br-node" onclick="d('b-feat')"><span class="br-dot" style="background:#888780"></span><div><div class="br-name">feat/* branch</div><div class="br-desc">Feature work — no Sonar · no build · no deploy · PR to dev when ready</div></div></div>
   <div class="br-arrow" style="font-size:9px">·</div>
   <div class="br-node" onclick="d('b-fix')"><span class="br-dot" style="background:#D85A30"></span><div><div class="br-name">fix/INC-ID-desc</div><div class="br-desc">Rollback fixes — PR to dev · triggers full rebuild cycle</div></div></div>
   <div class="br-arrow" style="font-size:9px">·</div>
@@ -371,16 +453,16 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   <div style="font-size:10.5px;font-weight:500;color:var(--color-text-primary);margin-bottom:9px">Flow rules per branch</div>
   <div style="display:flex;flex-direction:column;gap:7px">
     <div class="card" onclick="d('flow-feat')"><div class="ct">feat/* — developer iteration</div><div style="font-size:9.5px;color:var(--color-text-secondary);line-height:1.6">No SonarQube · no build · no deploy · no tests on the branch itself. PR to dev triggers the first SQ scan/Semgrep and DEV build.</div></div>
-    <div class="card" onclick="d('flow-dev')"><div class="ct">dev branch — integration + DEV build</div><div style="font-size:9.5px;color:var(--color-text-secondary);line-height:1.6">Merge → SonarQube full scan → build DEV package → push GAR-DEV → deploy DEV → smoke tests → DEV gate. Fail = ServiceNow INC + email.</div></div>
-    <div class="card" onclick="d('flow-qa')"><div class="ct">qa branch — QA build via PR</div><div style="font-size:9.5px;color:var(--color-text-secondary);line-height:1.6">PR dev→qa after DEV gate pass → SonarQube on qa branch → build QA package → push GAR-QA → QA lead approval → deploy QA → regression → QA gate.</div></div>
-    <div class="card" onclick="d('flow-prod')"><div class="ct">main branch — PROD build via PR</div><div style="font-size:9.5px;color:var(--color-text-secondary);line-height:1.6">PR qa→main after QA gate pass → 2 approvals + GitHub Ruleset → SonarQube on main → build PROD package → push GAR-PROD → Harness OPA → 2 approvals → canary.</div></div>
+    <div class="card" onclick="d('flow-dev')"><div class="ct">dev branch — integration + DEV build</div><div style="font-size:9.5px;color:var(--color-text-secondary);line-height:1.6">Merge → SQ scan → build DEV package → push GAR-DEV → deploy DEV → smoke tests → DEV gate. Fail = email notification.</div></div>
+    <div class="card" onclick="d('flow-qa')"><div class="ct">qa branch — QA build via PR</div><div style="font-size:9.5px;color:var(--color-text-secondary);line-height:1.6">PR dev→qa after DEV gate pass → SQ scan on qa branch → build QA package → push GAR-QA → QA lead approval → deploy QA → regression → QA gate.</div></div>
+    <div class="card" onclick="d('flow-prod')"><div class="ct">main branch — PROD build via PR</div><div style="font-size:9.5px;color:var(--color-text-secondary);line-height:1.6">PR qa→main after QA gate pass → GitHub Ruleset → SQ scan on main → build PROD package → push GAR-PROD → Harness OPA → approval → canary.</div></div>
     <div class="card" onclick="d('flow-naming')"><div class="ct">Naming conventions</div><div style="font-size:9.5px;color:var(--color-text-secondary);line-height:1.6">feat/INC-123-add-webhook · fix/INC-456-null-login · hotfix/INC-789-timeout · Persistent: dev, qa, main</div></div>
   </div>
 </div>
 </div>
-</div>
+</div><!-- /tab-branching -->
 
-<!-- ===== GITHUB RULESETS ===== -->
+<!-- ── GITHUB RULESETS TAB ── -->
 <div id="tab-github" class="tp">
 <div class="two">
 <div>
@@ -396,15 +478,15 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
     <div class="ct">Ruleset: qa branch</div>
     <div class="rr" onclick="d('gh-qa-pr')"><div class="ri">→</div><div class="rt"><strong>Require PR</strong> from dev branch — no direct push</div></div>
     <div class="rr" onclick="d('gh-qa-approval')"><div class="ri">→</div><div class="rt"><strong>1 approval required</strong> — CODEOWNER for changed paths</div></div>
-    <div class="rr" onclick="d('gh-qa-sonar')"><div class="ri">→</div><div class="rt"><strong>SonarQube PR check</strong> — required status check; fail raises ServiceNow INC + email</div></div>
+    <div class="rr" onclick="d('gh-qa-sonar')"><div class="ri">→</div><div class="rt"><strong>SonarQube PR check</strong> — required status check; DEV/QA fail sends email only (no INC)</div></div>
     <div class="rr" onclick="d('gh-qa-dev-gate')"><div class="ri">→</div><div class="rt"><strong>DEV gate pass</strong> required — Harness status check confirms DEV tests passed</div></div>
   </div>
   <div class="card">
     <div class="ct">Ruleset: dev branch</div>
     <div class="rr" onclick="d('gh-dev-pr')"><div class="ri">→</div><div class="rt"><strong>Require PR</strong> from feat/*, fix/*, hotfix/* — no direct push</div></div>
     <div class="rr" onclick="d('gh-dev-codeowner')"><div class="ri">→</div><div class="rt"><strong>1 CODEOWNER approval</strong> required for changed paths</div></div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>No SonarQube check required on PR</strong> — Sonar runs post-merge as part of DEV build pipeline</div></div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>Branch auto-delete</strong> for feat/* and fix/* after merge (Not implemente right Now)</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>No SonarQube check on PR</strong> — Sonar runs post-merge as part of DEV build pipeline</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>Branch auto-delete</strong> for feat/* and fix/* after merge (not yet implemented)</div></div>
   </div>
 </div>
 <div>
@@ -418,23 +500,25 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   <div class="card" style="margin-bottom:9px">
     <div class="ct">CODEOWNERS file</div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>Location:</strong> /.github/CODEOWNERS in repo root</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>Auto-requested</strong> on PR open — author cannot self-approve</div></div>
   </div>
   <div class="card">
     <div class="ct">Commit + PR conventions</div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>PR template:</strong> ServiceNow INC reference, description, test evidence(Prod Branch Scanning failure only)</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>PR template:</strong> ServiceNow INC reference, description, test evidence (PROD branch scanning failure only)</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>Squash merge only</strong> into dev, qa, main — clean linear history</div></div>
   </div>
 </div>
 </div>
-</div>
+</div><!-- /tab-github -->
 
-<!-- ===== HARNESS POLICIES ===== -->
+<!-- ── HARNESS POLICIES TAB ── -->
 <div id="tab-harness" class="tp">
 <div class="two">
 <div>
   <div class="card" style="margin-bottom:9px">
     <div class="ct">Harness pipeline — DEV stage</div>
     <div class="rr" onclick="d('h-dev-trigger')"><div class="ri">→</div><div class="rt"><strong>Trigger:</strong> GitHub webhook on push to dev branch</div></div>
-    <div class="rr" onclick="d('h-dev-sonar')"><div class="ri">→</div><div class="rt"><strong>SonarQube step:</strong> full scan on dev branch — gate fail raises ServiceNow INC + email + pipeline stops</div></div>
+    <div class="rr" onclick="d('h-dev-sonar')"><div class="ri">→</div><div class="rt"><strong>SQ scan step:</strong> full scan on dev branch — gate fail sends email only (no ServiceNow INC)</div></div>
     <div class="rr" onclick="d('h-dev-build')"><div class="ri">→</div><div class="rt"><strong>Build step:</strong> Docker image compiled, SBOM generated, dev-vX.Y-sha tagged</div></div>
     <div class="rr" onclick="d('h-dev-scan')"><div class="ri">→</div><div class="rt"><strong>Container scan:</strong> Trivy / Aqua — CRITICAL CVE = pipeline fail</div></div>
     <div class="rr" onclick="d('h-dev-gar')"><div class="ri">→</div><div class="rt"><strong>GAR push:</strong> Cosign-signed image pushed to GAR-DEV repository</div></div>
@@ -444,7 +528,7 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   <div class="card" style="margin-bottom:9px">
     <div class="ct">Harness pipeline — QA stage</div>
     <div class="rr" onclick="d('h-qa-trigger')"><div class="ri">→</div><div class="rt"><strong>Trigger:</strong> GitHub webhook on PR merge to qa branch</div></div>
-    <div class="rr" onclick="d('h-qa-sonar')"><div class="ri">→</div><div class="rt"><strong>SonarQube step:</strong> full scan on qa branch — gate fail raises ServiceNow INC + email + stops</div></div>
+    <div class="rr" onclick="d('h-qa-sonar')"><div class="ri">→</div><div class="rt"><strong>SQ scan step:</strong> full scan on qa branch — gate fail sends email only (no ServiceNow INC ticket)</div></div>
     <div class="rr" onclick="d('h-qa-build')"><div class="ri">→</div><div class="rt"><strong>Build step:</strong> separate Docker image for QA, qa-vX.Y-sha tagged</div></div>
     <div class="rr" onclick="d('h-qa-gar')"><div class="ri">→</div><div class="rt"><strong>GAR push:</strong> Cosign-signed image pushed to GAR-QA repository</div></div>
     <div class="rr" onclick="d('h-qa-approval')"><div class="ri">→</div><div class="rt"><strong>Approval step:</strong> QA lead must approve in Harness UI — 72h timeout, email escalation at 48h</div></div>
@@ -454,11 +538,11 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   <div class="card">
     <div class="ct">Harness pipeline — PROD stage</div>
     <div class="rr" onclick="d('h-prod-trigger')"><div class="ri">→</div><div class="rt"><strong>Trigger:</strong> GitHub webhook on PR merge to main</div></div>
-    <div class="rr" onclick="d('h-prod-sonar')"><div class="ri">→</div><div class="rt"><strong>SonarQube step:</strong> full scan on main — gate fail raises P1 ServiceNow INC + email + stops</div></div>
+    <div class="rr" onclick="d('h-prod-sonar')"><div class="ri">→</div><div class="rt"><strong>SQ scan step:</strong> full scan on main — gate fail raises P1 ServiceNow INC + email + stops</div></div>
     <div class="rr" onclick="d('h-prod-build')"><div class="ri">→</div><div class="rt"><strong>Build step:</strong> separate PROD Docker image, prod-vX.Y-sha tagged</div></div>
     <div class="rr" onclick="d('h-prod-gar')"><div class="ri">→</div><div class="rt"><strong>GAR push:</strong> Cosign-signed image pushed to GAR-PROD repository</div></div>
     <div class="rr" onclick="d('h-prod-opa')"><div class="ri">→</div><div class="rt"><strong>OPA policies:</strong> 6 checks before approval — scan pass, QA gate, Sonar gate, tag format, registry origin, deploy window</div></div>
-    <div class="rr" onclick="d('h-prod-approval')"><div class="ri">→</div><div class="rt"><strong>Approval step:</strong> 2-of-2 — Eng lead + Change mgmt — 48h timeout, email escalation</div></div>
+    <div class="rr" onclick="d('h-prod-approval')"><div class="ri">→</div><div class="rt"><strong>Approval step:</strong> Change mgmt approval — 48h timeout, email escalation</div></div>
     <div class="rr" onclick="d('h-prod-canary')"><div class="ri">→</div><div class="rt"><strong>Canary step:</strong> 5%→25%→100% with auto-rollback on error rate breach + P1 INC</div></div>
   </div>
 </div>
@@ -471,12 +555,12 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
     <div class="rr" onclick="d('opa-tag')"><div class="ri">→</div><div class="rt"><strong>Image tag format:</strong> prod-v[0-9]+.* — "latest", "dev-*", "qa-*" tags blocked in PROD</div></div>
     <div class="rr" onclick="d('opa-registry')"><div class="ri">→</div><div class="rt"><strong>GAR-PROD origin:</strong> image must originate from approved GAR-PROD repository only</div></div>
     <div class="rr" onclick="d('opa-window')"><div class="ri">→</div><div class="rt"><strong>Deploy window:</strong> Mon–Thu 10:00–15:00 UTC — holidays blocked, CHG override required</div></div>
-    <div class="rr" onclick="d('opa-approvals')"><div class="ri">→</div><div class="rt"><strong>Approval counts:</strong> DEV=0 (auto) · QA=1 (QA lead) · PROD=2 (Eng lead + Change mgmt)</div></div>
+    <div class="rr" onclick="d('opa-approvals')"><div class="ri">→</div><div class="rt"><strong>Approval counts:</strong> DEV=0 (auto) · QA=1 (QA lead) · PROD=1 (Change mgmt)</div></div>
   </div>
   <div class="card" style="margin-bottom:9px">
     <div class="ct">ServiceNow INC trigger matrix</div>
-    <div class="rr" onclick="d('sn-dev-sonar')"><div class="ri">→</div><div class="rt"><strong>Sonar fail at DEV build:</strong> P2 INC + email to app team + pipeline owner</div></div>
-    <div class="rr" onclick="d('sn-qa-sonar')"><div class="ri">→</div><div class="rt"><strong>Sonar fail at QA build:</strong> P2 INC + email to app team + QA lead</div></div>
+    <div class="rr" onclick="d('sn-dev-sonar')"><div class="ri">→</div><div class="rt"><strong>Sonar fail at DEV build:</strong> email to app team + pipeline owner (no INC)</div></div>
+    <div class="rr" onclick="d('sn-qa-sonar')"><div class="ri">→</div><div class="rt"><strong>Sonar fail at QA build:</strong> email to app team + QA lead (no INC)</div></div>
     <div class="rr" onclick="d('sn-prod-sonar')"><div class="ri">→</div><div class="rt"><strong>Sonar fail at PROD build:</strong> P1 INC + email to Eng lead + app team + Change mgmt</div></div>
     <div class="rr" onclick="d('sn-dev-test')"><div class="ri">→</div><div class="rt"><strong>DEV test failure / rollback:</strong> P3 INC + email to app team</div></div>
     <div class="rr" onclick="d('sn-qa-test')"><div class="ri">→</div><div class="rt"><strong>QA test failure / rollback:</strong> P2 INC + email to app team + QA lead</div></div>
@@ -484,18 +568,18 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
     <div class="rr" onclick="d('sn-resolve')"><div class="ri">→</div><div class="rt"><strong>Auto-close:</strong> INC resolved when pipeline re-runs and all gates pass</div></div>
   </div>
   <div class="card">
-    <div class="ct">SonarQube configuration</div>
+    <div class="ct">SonarQube / Semgrep configuration</div>
     <div class="rr"><div class="ri">→</div><div class="rt"><strong>feat/*:</strong> explicitly excluded — no scan ever triggered on feature branches</div></div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>dev branch:</strong> full scan post-merge — coverage ≥ 80%, 0 blockers, 0 critical vulns</div></div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>qa branch:</strong> full scan post-PR-merge — same thresholds as dev</div></div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>main branch:</strong> full scan post-PR-merge — OPA also confirms gate at PROD stage</div></div>
-    <div class="rr"><div class="ri">→</div><div class="rt"><strong>On any failure:</strong> Harness ServiceNow plugin creates INC via REST API + sends email</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>dev branch:</strong> full scan post-merge — coverage ≥ 80%, 0 blockers, 0 critical vulns. Email on fail.</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>qa branch:</strong> full scan post-PR-merge — same thresholds. Email on fail. No INC ticket.</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>main branch:</strong> full scan post-PR-merge — OPA also confirms gate at PROD stage. INC on fail.</div></div>
+    <div class="rr"><div class="ri">→</div><div class="rt"><strong>PROD failure only:</strong> Harness ServiceNow plugin creates INC via REST API + sends email to all stakeholders</div></div>
   </div>
 </div>
 </div>
-</div>
+</div><!-- /tab-harness -->
 
-<!-- DETAIL PANEL -->
+<!-- PIPELINE DETAIL PANEL -->
 <div id="dp" class="panel">
   <span class="cls" onclick="document.getElementById('dp').classList.remove('open')">✕ close</span>
   <h3 id="dp-t"></h3>
@@ -505,7 +589,7 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
 <!-- LEGEND -->
 <div class="leg">
   <div class="li"><span class="lc" style="background:#F1EFE8;border-color:#888780"></span>feat/* (no Sonar/build/deploy)</div>
-  <div class="li"><span class="lc" style="background:#FAECE7;border-color:#993C1D"></span>SonarQube</div>
+  <div class="li"><span class="lc" style="background:#FAECE7;border-color:#993C1D"></span>SonarQube / Semgrep</div>
   <div class="li"><span class="lc" style="background:#E6F1FB;border-color:#378ADD"></span>ServiceNow INC + email</div>
   <div class="li"><span class="lc" style="background:#EEEDFE;border-color:#534AB7"></span>Build</div>
   <div class="li"><span class="lc" style="background:#FBEAF0;border-color:#993556"></span>GAR (per env)</div>
@@ -517,123 +601,230 @@ body{font-family:var(--font-sans);background:var(--color-background-secondary);c
   <div class="li"><span class="lc" style="background:#FAECE7;border-color:#D85A30"></span>Rollback</div>
   <div class="li"><span class="lc" style="background:#2c2c2a;border-color:#5F5E5A"></span>GitHub Ruleset</div>
 </div>
+</div><!-- /wb -->
+</div><!-- /section-pipeline -->
+
+
+<!-- ══════════════════════════════════════════
+     SECTION 2: RELEASE MANAGEMENT & HARNESS
+══════════════════════════════════════════ -->
+<div id="section-release-mgmt" class="ss-section">
+
+<!-- Header pill strip -->
+<div class="pill-row">
+  <span class="pill p-purple">Release management</span>
+  <span class="pill p-teal">Harness platform</span>
+  <span class="pill p-blue">Harness CD governance</span>
+  <span class="pill p-sn">ServiceNow integration</span>
+  <span class="pill p-coral">Governance &amp; compliance</span>
+  <span class="pill p-amber">Outcomes &amp; value</span>
+  <span class="pill p-gray">Key takeaways</span>
 </div>
 
+<!-- ── SECTION: RM OVERVIEW ── -->
+<div class="rm-section">
+  <div class="rm-section-title">Release management overview</div>
+  <div class="grid-3">
+    <div class="coloured-card cc-purple" onclick="d('rm-lifecycle')">
+      <div class="card-title">Lifecycle coordination</div>
+      <div class="card-body">Coordinates releases from planning through deployment and validation to ensure safe delivery.</div>
+    </div>
+    <div class="coloured-card cc-coral" onclick="d('rm-governance')">
+      <div class="card-title">Governance and compliance</div>
+      <div class="card-body">Defines readiness rules, approval standards, and ensures audit compliance throughout.</div>
+    </div>
+    <div class="coloured-card cc-teal" onclick="d('rm-automation')">
+      <div class="card-title">Modern automation</div>
+      <div class="card-body">Leverages automation tools and data insights to improve decision-making and reduce manual tasks.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION: HARNESS PLATFORM ── -->
+<div class="rm-section">
+  <div class="rm-section-title">Harness platform functionality</div>
+  <div class="grid-4">
+    <div class="coloured-card cc-blue" onclick="d('h-lifecycle')">
+      <div class="card-title">Lifecycle stages alignment</div>
+      <div class="card-body">Focuses on Build, Deploy, Monitor with approval and validation controls.</div>
+    </div>
+    <div class="coloured-card cc-blue" onclick="d('h-build-rm')">
+      <div class="card-title">Build and test automation</div>
+      <div class="card-body">Automates code checkout, testing, scanning, and artifact creation for repeatable builds.</div>
+    </div>
+    <div class="coloured-card cc-blue" onclick="d('h-deploy-rm')">
+      <div class="card-title">Deployment strategies</div>
+      <div class="card-body">Rolling, blue-green, and canary deployments to reduce operational risk during rollout.</div>
+    </div>
+    <div class="coloured-card cc-blue" onclick="d('h-monitor-rm')">
+      <div class="card-title">Monitoring and verification</div>
+      <div class="card-body">Monitors logs, metrics, and health checks post-deployment for informed release decisions.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION: INTERACTION FLOW ── -->
+<div class="rm-section">
+  <div class="rm-section-title">How release management interacts with Harness</div>
+  <div style="font-size:9.5px;color:var(--color-text-tertiary);margin-bottom:8px">Release management inputs flow into Harness execution</div>
+  <div class="flow-row">
+    <div class="flow-node" style="border-color:#534AB7;background:#EEEDFE" onclick="d('flow-planning')">
+      <div class="fn-title" style="color:#3C3489">Release planning</div>
+      <div class="fn-sub" style="color:#534AB7">Components, envs, schedules</div>
+    </div>
+    <div class="flow-arr">→</div>
+    <div class="flow-node" style="border-color:#993C1D;background:#FAECE7" onclick="d('flow-change')">
+      <div class="fn-title" style="color:#4A1B0C">Change approval</div>
+      <div class="fn-sub" style="color:#993C1D">Readiness gates · CHG records</div>
+    </div>
+    <div class="flow-arr">→</div>
+    <div class="flow-node" style="border-color:#185FA5;background:#E6F1FB" onclick="d('flow-pipeline-rm')">
+      <div class="fn-title" style="color:#0C447C">Harness pipeline</div>
+      <div class="fn-sub" style="color:#185FA5">Build · scan · approval steps</div>
+    </div>
+    <div class="flow-arr">→</div>
+    <div class="flow-node" style="border-color:#0F6E56;background:#E1F5EE" onclick="d('flow-deploy-rm')">
+      <div class="fn-title" style="color:#085041">Deploy and verify</div>
+      <div class="fn-sub" style="color:#0F6E56">Canary · rollback · APM</div>
+    </div>
+    <div class="flow-arr">→</div>
+    <div class="flow-node" style="border-color:#854F0B;background:#FAEEDA" onclick="d('flow-feedback')">
+      <div class="fn-title" style="color:#633806">Feedback and audit</div>
+      <div class="fn-sub" style="color:#854F0B">Traceability · reporting</div>
+    </div>
+  </div>
+  <div class="grid-3">
+    <div class="card" onclick="d('tp-planning')">
+      <div class="card-title">Release planning integration</div>
+      <div class="card-body">Release management defines components, teams, and environments early, reflecting decisions in Harness pipeline configurations and schedules.</div>
+    </div>
+    <div class="card" onclick="d('tp-approval')">
+      <div class="card-title">Change approval and readiness</div>
+      <div class="card-body">Harness pipelines include approval steps requiring authorisation linked directly to pipeline execution and environment context.</div>
+    </div>
+    <div class="card" onclick="d('tp-rollback-rm')">
+      <div class="card-title">Rollback and validation</div>
+      <div class="card-body">Automated rollback and deployment verification allow validation of releases and fast root-cause analysis when issues arise.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION: HARNESS CD AND RELEASE GOVERNANCE ── -->
+<div class="rm-section">
+  <div class="rm-section-title">Harness CD and release governance</div>
+  <div class="integration-band">
+    <div class="ib-title">How Harness enforces governance across the release lifecycle</div>
+    <div class="grid-3">
+      <div class="accent-card" style="border-left-color:#534AB7" onclick="dRM('gov-pipelines')">
+        <div class="card-title">Standardized release pipelines</div>
+        <div class="card-body">Harness CD pipelines enforce consistent release patterns with required testing, security scans, and deployment controls.</div>
+      </div>
+      <div class="accent-card" style="border-left-color:#0F6E56" onclick="dRM('gov-approvals')">
+        <div class="card-title">Embedded governance and approvals</div>
+        <div class="card-body">Release governance is embedded via role-based, environment-specific approvals, ensuring risk-based scrutiny of deployments.</div>
+      </div>
+      <div class="accent-card" style="border-left-color:#185FA5" onclick="dRM('gov-audit')">
+        <div class="card-title">Comprehensive audit trails</div>
+        <div class="card-body">Harness provides audit trails detailing approvals, deployments, timing, and outcomes for compliance and reviews.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION: SERVICENOW INTEGRATION ── -->
+<div class="rm-section">
+  <div class="rm-section-title">ServiceNow integration — authoritative change record system</div>
+  <div class="integration-band">
+    <div class="ib-title">ServiceNow as the enterprise system of record for change and release governance</div>
+    <div class="grid-4">
+      <div class="accent-card" style="border-left-color:#185FA5" onclick="dRM('sn-system')">
+        <div class="card-title">Change record system</div>
+        <div class="card-body">ServiceNow is the authoritative system for managing change and release governance in enterprises.</div>
+      </div>
+      <div class="accent-card" style="border-left-color:#534AB7" onclick="dRM('sn-integration-rm')">
+        <div class="card-title">Pipeline integration</div>
+        <div class="card-body">Harness integrates with ServiceNow to align pipeline executions with approved change records for compliance.</div>
+      </div>
+      <div class="accent-card" style="border-left-color:#0F6E56" onclick="dRM('sn-traceability')">
+        <div class="card-title">End-to-end traceability</div>
+        <div class="card-body">Complete traceability from change approval to deployment, improving audit readiness across the enterprise.</div>
+      </div>
+      <div class="accent-card" style="border-left-color:#854F0B" onclick="dRM('sn-benefits')">
+        <div class="card-title">Integration benefits</div>
+        <div class="card-body">Reduces manual reconciliation, lowers audit risks, and enhances transparency in the release process.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION: ALIGNMENT ── -->
+<div class="rm-section">
+  <div class="rm-section-title">Alignment and collaboration</div>
+  <div class="grid-3">
+    <div class="coloured-card cc-teal" onclick="d('out-speed')">
+      <div class="card-title">Faster, safer releases</div>
+      <div class="card-body">Automation minimises manual effort and errors, enabling quicker, more reliable software releases with managed risk.</div>
+    </div>
+    <div class="coloured-card cc-purple" onclick="d('out-visibility')">
+      <div class="card-title">Improved visibility and audit</div>
+      <div class="card-body">Real-time pipeline insights and detailed historical records support compliance, incident investigations, and reporting.</div>
+    </div>
+    <div class="coloured-card cc-amber" onclick="d('out-collab')">
+      <div class="card-title">Enhanced team collaboration</div>
+      <div class="card-body">Shared tools and processes unify engineering, security, and release teams, reducing conflict and improving delivery predictability.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION: KEY TAKEAWAYS ── -->
+<div class="rm-section">
+  <div class="rm-section-title">Key takeaways</div>
+  <div class="takeaway-row">
+    <div class="tk-card" onclick="d('tk-roles')">
+      <span class="tk-label p-purple">Complementary roles</span>
+      <div class="tk-title">Harness manages execution; RM manages governance</div>
+      <div class="tk-body">Harness handles technical release execution via automated pipelines. Release management focuses on governance and risk decisions.</div>
+    </div>
+    <div class="tk-card" onclick="d('tk-efficiency')">
+      <span class="tk-label p-teal">Integrated efficiency</span>
+      <div class="tk-title">Automation enforces standards at scale</div>
+      <div class="tk-body">Effective integration uses automation to enforce standards, accelerating delivery without compromising control.</div>
+    </div>
+    <div class="tk-card" onclick="d('tk-strategic')">
+      <span class="tk-label p-amber">Strategic enabler</span>
+      <div class="tk-title">Release managers shift to strategic roles</div>
+      <div class="tk-body">Release managers move from manual coordination to strategic roles enabled by automation and visibility.</div>
+    </div>
+    <div class="tk-card" onclick="d('tk-flow')">
+      <span class="tk-label p-coral">Flow and compliance</span>
+      <div class="tk-title">Together they ensure enterprise DevOps compliance</div>
+      <div class="tk-body">Harness and release management together ensure flow, traceability, and compliance in enterprise DevOps.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RM DETAIL PANEL -->
+<div id="dp-rm" class="panel">
+  <span class="cls" onclick="document.getElementById('dp-rm').classList.remove('open')">✕ close</span>
+  <h3 id="dp-rm-t"></h3>
+  <div id="dp-rm-b"></div>
+</div>
+
+</div><!-- /section-release-mgmt -->
+
+
 <script>
-const D={
-  'feat-commit':{title:'Feature branch commit',rows:[['branch','feat/INC-ID-short-desc — ServiceNow INC reference required in branch name'],['no sonar','SonarQube does NOT run on feat/* — excluded by Sonar project config and Ruleset']]},
-  'feat-local':{title:'Local dev and tests on feature branch',rows:[['scope','Developer runs tests locally — no CI pipeline triggered on feat/* push'],['purpose','Fast iteration — no pipeline overhead on every commit'],['note','First SQ scan/Semgrep happens only after PR is merged into dev branch']]},
-  'feat-no-sonar':{title:'SonarQube excluded on feat/*',rows:[['config','SonarQube project config and GitHub Ruleset both exclude feat/* branches'],['rationale','Feature branches are developer sandboxes — scanning happens at integration (dev branch)'],['when','First scan fires post-merge to dev — this is the quality gate']]},
-  'feat-pr-dev':{title:'PR from feat/* to dev branch',rows:[['target','PR targets dev branch only — never qa or main directly'],['template','PR template: ServiceNow INC reference, description, manual test evidence'],['codeowner','CODEOWNER auto-requested for changed paths'],['approval','1 CODEOWNER approval required — author cannot self-approve']]},
-  'feat-merge-dev':{title:'Merge feat/* → dev',rows:[['method','Squash merge — clean linear history on dev branch'],['trigger','Harness DEV build pipeline fires immediately on push'],['first scan','SonarQube full scan runs here for the first time on this code']]},
-  'dev-trigger':{title:'Harness trigger — DEV build',rows:[['event','GitHub push webhook on merge to dev branch'],['pipeline','SonarQube → build → container scan → GAR-DEV push → deploy DEV → smoke tests'],['isolation','Isolated Harness runner with least-privilege service account']]},
-  'dev-sonar':{title:'SonarQube full scan — DEV build',rows:[['scope','Full codebase scan on dev branch — first scan for code from feat/* branches'],['gate','Coverage ≥ 80% new code, 0 blockers, 0 critical vulnerabilities, reliability A'],['fail','Pipeline stops on gate fail — no build, no GAR push, no deploy'],['on fail','ServiceNow P2 INC auto-created via Harness ServiceNow plugin + email to app team + pipeline owner']]},
-  'dev-snow':{title:'ServiceNow INC on DEV Sonar failure',rows:[['priority','P2 incident'],['fields','Branch, commit SHA, pipeline run URL, gate failure reason, failed metrics vs thresholds'],['email','App team + pipeline owner'],['block','Pipeline fully blocked — nothing proceeds until gate passes and INC is resolved'],['auto-close','INC auto-closed when pipeline re-runs and gate passes']]},
-  'dev-build':{title:'Build DEV package',rows:[['output','Docker image tagged dev-vX.Y-gitsha'],['sbom','SBOM generated and attached to image'],['once','This image is used only for DEV — QA and PROD get their own separate builds']]},
-  'dev-img-scan':{title:'Container scan — DEV',rows:[['tool','Trivy or Aqua — Harness security scan step'],['scope','OS packages, app deps, base image CVEs'],['threshold','CRITICAL CVE = pipeline fail; HIGH = warn only']]},
-  'dev-gar':{title:'Push to GAR-DEV',rows:[['repo','Separate GAR repository for DEV: gar.io/project/app-dev'],['tag','Immutable tag: dev-vX.Y-gitsha'],['signing','Cosign signature with KMS key'],['retention','Previous images retained — rollback pulls from GAR-DEV']]},
-  'dev-deploy':{title:'Deploy to DEV',rows:[['method','helm upgrade in DEV K8s namespace — fully automated, no approval'],['rollback','Harness auto-rollback on health check failure + ServiceNow INC + email']]},
-  'dev-tests':{title:'Smoke + unit tests — DEV',rows:[['scope','Health check endpoints + 2–3 critical E2E flows'],['time','< 5 minutes — fast feedback'],['fail','Auto-rollback + ServiceNow P3 INC + email to app team']]},
-  'dev-gate':{title:'DEV gate',rows:[['pass','All tests green → team can open PR from dev to qa branch'],['fail','Auto-rollback + ServiceNow INC raised → developer creates fix/* branch → full rebuild']]},
-  'dev-rb':{title:'Rollback at DEV',rows:[['trigger','Smoke test failure or health check miss'],['action','Harness rolls back to previous GAR-DEV image digest'],['notify','ServiceNow P3 INC + email to app team'],['fix','Developer creates fix/INC-ID branch → PR to dev → new DEV build cycle']]},
-  'qa-pr':{title:'PR dev → qa branch',rows:[['prerequisite','DEV gate must have passed — Harness status check confirms this'],['target','PR targets qa branch — never main directly'],['approval','1 approval — QA lead or path CODEOWNER']]},
-  'qa-gh-rule':{title:'GitHub Ruleset — qa branch',rows:[['pr','PR required from dev branch — no direct push'],['approval','1 approval: QA lead or CODEOWNER for changed paths'],['sonar','SonarQube check required — fail raises ServiceNow INC + email'],['dev-gate','Harness DEV gate status check must be passing']]},
-  'qa-sonar':{title:'SQ scan/Semgrep — QA build',rows:[['scope','Full scan on qa branch — catches regressions since dev scan'],['thresholds','Coverage ≥ 80%, 0 blockers, 0 critical vulnerabilities'],['fail','Pipeline stops — no QA build, no GAR-QA push'],['on fail','ServiceNow P2 INC + email to app team + QA lead']]},
-  'qa-build':{title:'Build QA package',rows:[['output','Docker image tagged qa-vX.Y-gitsha — separate from DEV image'],['rationale','QA gets its own build to catch environment-specific issues and ensure a fresh validated artifact']]},
-  'qa-gar':{title:'Push to GAR-QA',rows:[['repo','Separate GAR repository: gar.io/project/app-qa'],['tag','Immutable tag: qa-vX.Y-gitsha'],['signing','Cosign signed'],['retention','Previous QA images retained for rollback']]},
-  'qa-approval':{title:'QA lead approval gate',rows:[['approver','QA Lead (or named delegate) in Harness approval UI'],['timeout','72 hours — email escalation to QA manager at 48h'],['context','Approver sees: QA scan report, DEV test results, SonarQube status, change description'],['reject','Rejection requires written reason — logged in Harness audit trail']]},
-  'qa-deploy':{title:'Deploy to QA',rows:[['method','helm upgrade in QA K8s namespace — isolated from DEV and PROD'],['rollback','Harness rollback to previous GAR-QA image on failure + ServiceNow INC']]},
-  'qa-tests':{title:'Full QA test suite',rows:[['types','Functional regression, integration, API contract, performance baseline'],['gate','All regression must pass; perf must not regress > 10%'],['record','QA pass result stored in Harness metadata — referenced by OPA at PROD stage']]},
-  'qa-gate':{title:'QA gate',rows:[['pass','Full suite green → team can open PR from qa to main'],['fail','QA lead triggers rollback → ServiceNow INC + email → fix in dev → rebuild all envs'],['stored','Gate result written to Harness pipeline output — OPA reads this at PROD']]},
-  'qa-rb':{title:'Rollback at QA',rows:[['trigger','Regression failure, performance breach, or QA lead rejection'],['action','Harness rolls back to previous GAR-QA image'],['notify','ServiceNow P2 INC + email to app team + QA lead'],['fix','Fix goes back to dev → new DEV build → new PR to qa → new QA build']]},
-  'prod-pr':{title:'PR qa → main',rows:[['prerequisite','QA gate must have passed — Harness + GitHub status check confirms this'],['approvals','2 approvals required by GitHub Ruleset: Eng lead + Change mgmt']]},
-  'prod-gh-rule':{title:'GitHub Ruleset — main branch',rows:[['pr','PR required from qa branch only — no direct push ever'],['approvals','2 required approvals — Eng lead + Change mgmt representative'],['checks','SonarQube gate + container scan + Harness OPA + QA gate status'],['lock','Branch locked by Harness during active PROD deploy']]},
-  'prod-sonar':{title:'SQ scan/Semgrep — PROD build',rows:[['scope','Full scan on main branch — final quality gate before production'],['fail','Pipeline stops — no PROD build, no GAR-PROD push'],['on fail','ServiceNow P1 INC + email to Eng lead + app team + Change mgmt']]},
-  'prod-build':{title:'Build PROD package',rows:[['output','Docker image tagged prod-vX.Y-gitsha — separate from DEV and QA images'],['rationale','PROD gets its own build from main — the most stable, fully approved branch']]},
-  'prod-gar':{title:'Push to GAR-PROD',rows:[['repo','Separate GAR repository: gar.io/project/app-prod'],['tag','Immutable tag: prod-vX.Y-gitsha'],['signing','Cosign KMS-key signed — signature verified before deploy'],['retention','All PROD images retained — rollback is instant']]},
-  'prod-opa1':{title:'Harness OPA: container scan pass',rows:[['policy','artifact.scanResult.critical == 0'],['first','First Harness OPA check — no OPA runs at DEV or QA'],['block','CRITICAL CVE blocks PROD — no override']]},
-  'prod-opa2':{title:'Harness OPA: QA gate on record',rows:[['policy','qa.testSuite.status == "passed" AND qa.approver.count >= 1'],['block','Pipeline halts if QA stage was skipped or failed for this code']]},
-  'prod-opa3':{title:'Harness OPA: deploy window + image tag + registry',rows:[['window','Mon–Thu 10:00–15:00 UTC'],['tag','image.tag must match prod-v[0-9]+.* — "latest", "dev-*", "qa-*" blocked'],['registry','Image must be from GAR-PROD only — cross-env images rejected'],['override','Emergency: ServiceNow CHG ticket required for window override']]},
-  'prod-approval':{title:'Production dual approval gate',rows:[['approvers','Engineering Lead AND Change Management representative'],['count','2-of-2 — both must approve before canary starts'],['timeout','48 hours — email escalation at 24h']]},
-  'prod-canary':{title:'Canary deployment',rows:[['p1','5% traffic → 10 min → error rate + p99 check'],['p2','25% traffic → 15 min → same checks'],['p3','100% traffic → final health check → verify step'],['rollback','Auto-rollback if error rate > 1% or p99 > baseline + 20%']]},
-  'prod-verify':{title:'PROD verification',rows:[['checks','Error rate < 0.1%, p99 within threshold, pod restarts == 0'],['window','15-minute observation window before marking SUCCEEDED'],['on fail','Auto-rollback + ServiceNow P1 INC + email']]},
-  'prod-rb':{title:'Rollback at PROD',rows:[['trigger','Canary error rate breach, p99 spike, or failed verify step'],['action','Harness canary abort + rollback to previous GAR-PROD image digest'],['notify','ServiceNow P1 INC + email to Eng lead, app team, Change mgmt'],['fix','Full fix cycle: fix in dev → DEV build → PR to QA build → PR to PROD build'],['approvals','Fresh 2-of-2 approval required for the new PROD deploy']]},
-  'snow-detail':{title:'ServiceNow INC + email — full detail',rows:[['trigger','Any SonarQube quality gate failure at DEV, QA, or PROD build stage'],['priority','P2 = DEV/QA Sonar or test failure · P1 = PROD Sonar fail or PROD rollback · P3 = DEV test failure'],['inc fields','Branch, commit SHA, pipeline run URL, gate status, failed metric values vs thresholds, environment'],['email','App team + pipeline owner (DEV) · + QA lead (QA) · + Eng lead + Change mgmt (PROD)'],['content','Gate failure reason, SonarQube dashboard link, ServiceNow INC link, recommended fix steps'],['auto-close','INC auto-closed when pipeline re-runs and all gates pass'],['integration','Harness built-in ServiceNow plugin creates INC via ServiceNow REST API']]},
-  'rb-fail':{title:'Failure at any environment',rows:[['dev','Smoke test or health check failure → auto-rollback DEV → ServiceNow P3 INC + email'],['qa','Test failure or QA lead rejection → rollback QA → ServiceNow P2 INC + email'],['prod','Canary error breach → auto-rollback PROD → ServiceNow P1 INC + email'],['principle','Fix always goes back to dev — never patch directly in QA or PROD']]},
-  'rb-rollback':{title:'Rollback triggered',rows:[['dev','Harness auto-rollback — previous GAR-DEV image restored'],['qa','Harness UI manual trigger by QA lead — previous GAR-QA image restored'],['prod','Harness auto (canary breach) — previous GAR-PROD image restored']]},
-  'rb-snow':{title:'ServiceNow INC raised on rollback',rows:[['created','Harness ServiceNow plugin creates INC immediately on rollback event'],['fields','Environment, trigger reason, rolled-back image digest, timestamp, pipeline URL'],['close','INC closed when fix fully deploys and all gates pass']]},
-  'rb-fix':{title:'Fix in feat/* branch',rows:[['branch','fix/INC-ID-short-desc — references the ServiceNow INC ticket number'],['source','Branch cut from current dev branch HEAD'],['scope','Fix only the failing issue — no additional features on fix branches']]},
-  'rb-pr-dev':{title:'Fix PR → dev branch',rows:[['same process','Full PR process: CODEOWNER approval required — no shortcuts'],['sonar','SonarQube runs post-merge to dev as part of the DEV build pipeline']]},
-  'rb-dev-build':{title:'New DEV build after fix',rows:[['trigger','Merge to dev → full Harness DEV pipeline fires'],['output','New image: dev-vX.Y-newsha pushed to GAR-DEV'],['tests','Full smoke test suite re-runs — must pass before PR to QA allowed']]},
-  'rb-qa-build':{title:'PR to QA → new QA build',rows:[['step','After DEV gate passes: PR dev→qa → QA build pipeline fires'],['output','New image: qa-vX.Y-newsha pushed to GAR-QA'],['approval','QA lead approval required again — no carry-over from previous cycle']]},
-  'rb-prod-build':{title:'PR to PROD → new PROD build',rows:[['step','After QA gate passes: PR qa→main → PROD build pipeline fires'],['output','New image: prod-vX.Y-newsha pushed to GAR-PROD'],['approvals','Fresh 2-of-2 approval required — OPA policies run again on the new image']]},
-  'rb-inc-close':{title:'ServiceNow INC auto-closed',rows:[['trigger','All pipeline stages pass — canary completes at 100%'],['action','Harness ServiceNow plugin sets INC to Resolved'],['email','Resolution email sent to all original INC recipients']]},
-  'b-main':{title:'main branch',rows:[['protection','Strictest ruleset — 2 approvals, all status checks'],['role','PROD source of truth — triggers PROD build + GAR-PROD push on merge'],['tagging','Every PROD deploy tagged vX.Y.Z on main']]},
-  'b-qa':{title:'qa branch',rows:[['protection','Protected — PR from dev only, 1 approval, Sonar check required'],['role','QA source of truth — triggers QA build + GAR-QA push on merge'],['long-lived','Persistent branch — not deleted after merge']]},
-  'b-dev':{title:'dev branch',rows:[['protection','Protected — PR from feat/*, fix/*, hotfix/* only, 1 CODEOWNER approval'],['role','Integration branch — triggers DEV build + GAR-DEV push + SonarQube on merge'],['long-lived','Persistent branch — never deleted']]},
-  'b-feat':{title:'feat/* branch',rows:[['lifetime','Short-lived — 1 to 5 days typically'],['no sonar','Explicitly excluded from SonarQube — no scan ever'],['no build','No CI build triggered on feat/* push'],['target','PR to dev branch only']]},
-  'b-fix':{title:'fix/* branch',rows:[['usage','Rollback remediation — created when a ServiceNow INC is raised'],['naming','fix/INC-ID-short-desc — must reference the open ServiceNow INC'],['target','PR to dev → triggers full rebuild cycle']]},
-  'b-hotfix':{title:'hotfix/* branch',rows:[['usage','Critical PROD defect requiring immediate fix outside the normal cycle'],['target','PR to dev AND PR to main simultaneously'],['note','Still must pass SonarQube and container scan — no gate bypass']]},
-  'flow-feat':{title:'Feature branch flow',rows:[['step1','Developer creates feat/INC-123 from dev branch HEAD'],['step2','Code, local tests — no Sonar, no CI, no deploy on the feat/* branch'],['step3','PR opened to dev → CODEOWNER review → merge'],['step4','Merge fires Harness DEV build → first SQ scan/Semgrep → DEV deploy + tests']]},
-  'flow-dev':{title:'dev branch flow',rows:[['step1','Merge from feat/* fires Harness pipeline'],['step2','SonarQube full scan — gate fail = ServiceNow INC + email + stop'],['step3','Build DEV Docker image → container scan → push to GAR-DEV'],['step4','Deploy DEV → smoke tests → DEV gate check'],['step5','Pass → team opens PR to qa branch']]},
-  'flow-qa':{title:'qa branch flow',rows:[['step1','PR dev→qa opened after DEV gate pass'],['step2','GitHub Ruleset checks: 1 approval + SonarQube status + DEV gate status'],['step3','Merge fires Harness QA pipeline → SonarQube on qa branch → build QA image → GAR-QA'],['step4','QA lead approval → deploy QA → regression + perf tests → QA gate'],['step5','Pass → team opens PR to main']]},
-  'flow-prod':{title:'main branch flow',rows:[['step1','PR qa→main opened after QA gate pass'],['step2','GitHub Ruleset: 2 approvals + all status checks'],['step3','Merge fires Harness PROD pipeline → SonarQube on main → build PROD image → GAR-PROD'],['step4','Harness OPA: 6 policy checks → 2-of-2 approval → canary → verify'],['step5','Success → tag vX.Y.Z on main']]},
-  'flow-naming':{title:'Naming conventions',rows:[['feat','feat/INC-123-add-stripe-webhook'],['fix','fix/INC-456-null-pointer-on-login'],['hotfix','hotfix/INC-789-payment-timeout'],['persistent','dev · qa · main — never deleted, never renamed']]},
-  'gh-main-pr':{title:'main: require PR',rows:[['setting','PR required from qa branch only — no direct push for anyone including admins']]},
-  'gh-main-2ap':{title:'main: 2 required approvals',rows:[['count','2 required — Engineering Lead and Change Management representative'],['stale','Stale review dismissed on any new commit push']]},
-  'gh-main-checks':{title:'main: required status checks',rows:[['checks','sonarqube/quality-gate · harness/container-scan · harness/opa-policy · harness/qa-gate-pass']]},
-  'gh-main-linear':{title:'main: linear history',rows:[['method','Squash or rebase merge only — merge commits disabled on main']]},
-  'gh-main-lock':{title:'main: branch lock during deploy',rows:[['when','Harness step locks main at start of PROD canary deploy'],['duration','Locked until canary verify step completes']]},
-  'gh-qa-pr':{title:'qa: require PR from dev',rows:[['setting','PR from dev only — hotfix/* allowed with change board override']]},
-  'gh-qa-approval':{title:'qa: 1 approval',rows:[['approver','QA lead or CODEOWNER for changed paths'],['stale','Review dismissed on new commits']]},
-  'gh-qa-sonar':{title:'qa: SonarQube required check',rows:[['check','sonarqube/quality-gate on qa branch'],['on fail','ServiceNow INC + email — PR cannot merge']]},
-  'gh-qa-dev-gate':{title:'qa: DEV gate status check',rows:[['check','harness/dev-gate-pass — Harness writes this status after DEV smoke tests pass'],['block','PR cannot merge if DEV gate has not passed for the same commit']]},
-  'gh-dev-pr':{title:'dev: require PR',rows:[['sources','feat/*, fix/*, hotfix/* only — no direct push'],['approval','1 CODEOWNER approval required']]},
-  'gh-dev-codeowner':{title:'dev: CODEOWNER approval',rows:[['file','/.github/CODEOWNERS maps paths to owning teams'],['auto-request','CODEOWNER auto-requested on PR open']]},
-  'h-dev-trigger':{title:'Harness DEV trigger',rows:[['event','Push webhook on dev branch merge'],['pipeline','SonarQube → build → scan → GAR-DEV push → deploy → smoke tests']]},
-  'h-dev-sonar':{title:'Harness: SonarQube step at DEV',rows:[['step type','Harness SonarQube plugin step — full branch analysis'],['on fail','ServiceNow INC created via REST API + email + pipeline aborts immediately']]},
-  'h-dev-build':{title:'Harness: DEV build step',rows:[['output','dev-vX.Y-gitsha tagged image']]},
-  'h-dev-scan':{title:'Harness: DEV container scan',rows:[['tool','Trivy or Aqua in Harness Security Tests step'],['threshold','CRITICAL = fail; HIGH = warning']]},
-  'h-dev-gar':{title:'Harness: GAR-DEV push',rows:[['auth','Harness SA with write role on GAR-DEV only'],['signing','Cosign step after push']]},
-  'h-dev-deploy':{title:'Harness: DEV deploy step',rows:[['method','helm upgrade --install with DEV values overlay'],['auto-rollback','Rollback step on health check failure — fires ServiceNow INC']]},
-  'h-dev-test':{title:'Harness: DEV test step',rows:[['on fail','Auto-rollback step fires → ServiceNow P3 INC raised → pipeline stops']]},
-  'h-qa-trigger':{title:'Harness QA trigger',rows:[['event','Push webhook on qa branch merge (from dev PR)']]},
-  'h-qa-sonar':{title:'Harness: SonarQube step at QA',rows:[['scope','Full scan on qa branch — can catch regressions since dev scan'],['on fail','ServiceNow P2 INC + email + pipeline aborts']]},
-  'h-qa-build':{title:'Harness: QA build step',rows:[['output','qa-vX.Y-gitsha tagged image — separate from DEV image']]},
-  'h-qa-gar':{title:'Harness: GAR-QA push',rows:[['auth','Harness SA with write role on GAR-QA only — no cross-env access']]},
-  'h-qa-approval':{title:'Harness: QA approval step',rows:[['type','Manual approval step in Harness pipeline'],['timeout','72 hours — email escalation to QA manager at 48h']]},
-  'h-qa-deploy':{title:'Harness: QA deploy step',rows:[['rollback','Manual or auto-rollback — ServiceNow INC on failure']]},
-  'h-qa-test':{title:'Harness: QA test step',rows:[['record','Gate result stored as pipeline output variable — OPA reads this at PROD']]},
-  'h-prod-trigger':{title:'Harness PROD trigger',rows:[['event','Push webhook on main merge (from qa PR)']]},
-  'h-prod-sonar':{title:'Harness: SonarQube step at PROD build',rows:[['scope','Full scan on main branch'],['on fail','P1 ServiceNow INC + email to Eng lead + app team + pipeline aborts']]},
-  'h-prod-build':{title:'Harness: PROD build step',rows:[['output','prod-vX.Y-gitsha tagged image — separate build from DEV and QA']]},
-  'h-prod-gar':{title:'Harness: GAR-PROD push',rows:[['auth','Harness SA with write role on GAR-PROD only'],['signing','Cosign with production KMS key']]},
-  'h-prod-opa':{title:'Harness: OPA policy checks at PROD',rows:[['1','artifact.scanResult.critical == 0'],['2','sonar.qualityGate.status == OK on main'],['3','qa.testSuite.status == passed AND qa.approver.count >= 1'],['4','image.tag matches prod-v[0-9]+.*'],['5','image.registry == approved GAR-PROD repo'],['6','deployWindow: Mon–Thu 10:00–15:00 UTC']]},
-  'h-prod-approval':{title:'Harness: PROD approval step',rows:[['count','2-of-2 — Eng Lead AND Change Management'],['timeout','48 hours — email escalation at 24h']]},
-  'h-prod-canary':{title:'Harness: canary deploy step',rows:[['strategy','5%→25%→100% with Argo Rollouts or Istio'],['rollback','Auto-rollback on breach + P1 ServiceNow INC']]},
-  'opa-scan':{title:'OPA: container scan pass',rows:[['rego','artifact.scanResult.critical == 0'],['enforced','PROD only — not DEV or QA']]},
-  'opa-sonar':{title:'OPA: SonarQube gate',rows:[['rego','sonar.qualityGate.status == "OK"'],['branch','Checks main branch gate status']]},
-  'opa-qa-pass':{title:'OPA: QA gate on record',rows:[['rego','qa.testSuite.status == "passed" AND qa.approver.count >= 1'],['block','Pipeline halts if QA was skipped or failed']]},
-  'opa-tag':{title:'OPA: image tag format',rows:[['rego','image.tag matches prod-v[0-9]+.[0-9]+.*'],['blocked','"latest", "dev-*", and "qa-*" tags blocked in PROD']]},
-  'opa-registry':{title:'OPA: GAR-PROD origin',rows:[['rego','image.registry == "gar.io/project/app-prod"'],['blocks','DEV or QA images cannot be deployed to PROD']]},
-  'opa-window':{title:'OPA: deploy window',rows:[['window','Mon–Thu 10:00–15:00 UTC'],['override','ServiceNow CHG ticket required — emergency only']]},
-  'opa-approvals':{title:'OPA: approval counts',rows:[['dev','0 — fully automated'],['qa','1 — QA Lead or delegate'],['prod','2 — Eng Lead AND Change Management representative']]},
-  'sn-dev-sonar':{title:'ServiceNow INC: DEV SonarQube failure',rows:[['priority','P2'],['email','App team + pipeline owner'],['action','Build pipeline stopped — no image produced, no deploy']]},
-  'sn-qa-sonar':{title:'ServiceNow INC: QA SonarQube failure',rows:[['priority','P2'],['email','App team + QA lead'],['action','QA build pipeline stopped — no QA image, no QA deploy']]},
-  'sn-prod-sonar':{title:'ServiceNow INC: PROD SonarQube failure',rows:[['priority','P1'],['email','Eng lead + app team + Change mgmt'],['action','PROD build pipeline stopped — no PROD image, no deploy']]},
-  'sn-dev-test':{title:'ServiceNow INC: DEV test failure',rows:[['priority','P3'],['email','App team'],['action','Auto-rollback DEV, fix cycle starts from feat/* → dev']]},
-  'sn-qa-test':{title:'ServiceNow INC: QA test failure',rows:[['priority','P2'],['email','App team + QA lead'],['action','QA rollback, full rebuild cycle required']]},
-  'sn-prod-fail':{title:'ServiceNow INC: PROD canary rollback',rows:[['priority','P1'],['email','Eng lead + app team + Change mgmt'],['action','Auto-rollback, full rebuild and re-approval cycle required']]},
-  'sn-resolve':{title:'ServiceNow INC auto-resolution',rows:[['trigger','All pipeline stages complete successfully'],['action','Harness ServiceNow plugin sets INC to Resolved'],['email','Resolution email to all original recipients']]},
-};
-function d(id){
-  const e=D[id];if(!e)return;
-  document.getElementById('dp-t').textContent=e.title;
-  document.getElementById('dp-b').innerHTML=e.rows.map(r=>`<div class="dr"><span class="dt">${r[0]}</span><span class="dd">${r[1]}</span></div>`).join('');
-  const p=document.getElementById('dp');
-  p.classList.add('open');
-  p.scrollIntoView({behavior:'smooth',block:'nearest'});
+/* ── Section switcher ── */
+function showSection(name, btn){
+  document.querySelectorAll('.ss-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.ss-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('section-'+name).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('dp').classList.remove('open');
+  const rm=document.getElementById('dp-rm');if(rm)rm.classList.remove('open');
 }
+
+/* ── Pipeline tab switcher ── */
 function st(name,btn){
   document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -641,6 +832,182 @@ function st(name,btn){
   btn.classList.add('active');
   document.getElementById('dp').classList.remove('open');
 }
+
+/* ── Pipeline detail data ── */
+const D={
+  'feat-commit':{title:'Feature branch commit',rows:[['branch','feat/INC-ID-short-desc — ServiceNow INC reference required in branch name'],['no sonar','SonarQube / Semgrep does NOT run on feat/* — excluded by Sonar project config and Ruleset']]},
+  'feat-local':{title:'Local dev on feature branch',rows:[['scope','Developer runs tests locally — no CI pipeline triggered on feat/* push'],['note','First SQ scan/Semgrep happens only after PR is merged into dev branch']]},
+  'feat-no-sonar':{title:'No SonarQube on feat/*',rows:[['config','SonarQube project config and GitHub Ruleset both exclude feat/* branches'],['when','First scan fires post-merge to dev — this is the quality gate']]},
+  'feat-pr-dev':{title:'PR from feat/* to dev branch',rows:[['target','PR targets dev branch only — never qa or main directly'],['codeowner','CODEOWNER auto-requested for changed paths'],['approval','1 CODEOWNER approval required — author cannot self-approve']]},
+  'feat-merge-dev':{title:'Merge feat/* → dev',rows:[['method','Squash merge — clean linear history on dev branch'],['trigger','Harness DEV build pipeline fires immediately on push'],['first scan','SQ scan/Semgrep runs here for the first time on this code']]},
+  'dev-trigger':{title:'Harness trigger — DEV build',rows:[['event','GitHub push webhook on merge to dev branch'],['pipeline','SQ scan → build → container scan → GAR-DEV push → deploy DEV → smoke tests']]},
+  'dev-sonar':{title:'SQ scan/Semgrep — DEV build',rows:[['scope','Full codebase scan on dev branch — first scan for code from feat/* branches'],['gate','Coverage ≥ 80% new code, 0 blockers, 0 critical vulnerabilities'],['fail','Pipeline stops on gate fail — no build, no GAR push, no deploy'],['on fail','Email notification to app team + pipeline owner. No ServiceNow INC ticket raised at DEV.']]},
+  'dev-build':{title:'Build DEV package',rows:[['output','Docker image tagged dev-vX.Y-gitsha'],['sbom','SBOM generated and attached to image'],['note','Used only for DEV — QA and PROD get their own separate builds']]},
+  'dev-img-scan':{title:'Container scan — DEV',rows:[['tool','Trivy or Aqua — Harness security scan step'],['threshold','CRITICAL CVE = pipeline fail; HIGH = warn only']]},
+  'dev-gar':{title:'Push to GAR-DEV',rows:[['repo','Separate GAR repository: gar.io/project/app-dev'],['tag','Immutable tag: dev-vX.Y-gitsha'],['signing','Cosign signature with KMS key']]},
+  'dev-deploy':{title:'Deploy to DEV',rows:[['method','helm upgrade in DEV K8s namespace — fully automated, no approval'],['rollback','Harness auto-rollback on health check failure + ServiceNow INC']]},
+  'dev-tests':{title:'Smoke tests — DEV',rows:[['scope','Health check endpoints + 2–3 critical E2E flows'],['fail','Auto-rollback + ServiceNow P3 INC + email to app team']]},
+  'dev-gate':{title:'DEV gate',rows:[['pass','All tests green → team can open PR from dev to qa branch'],['fail','Auto-rollback + ServiceNow INC raised → developer creates fix/* branch → full rebuild']]},
+  'dev-rb':{title:'Rollback at DEV',rows:[['trigger','Smoke test failure or health check miss'],['action','Harness rolls back to previous GAR-DEV image digest'],['notify','ServiceNow P3 INC + email to app team']]},
+  'qa-pr':{title:'PR dev → qa branch',rows:[['prerequisite','DEV gate must have passed — Harness status check confirms this'],['approval','1 approval — QA lead or path CODEOWNER']]},
+  'qa-gh-rule':{title:'GitHub Ruleset — qa branch',rows:[['pr','PR required from dev branch — no direct push'],['approval','1 approval: QA lead or CODEOWNER for changed paths'],['sonar','SQ scan check required — fail sends email only (no ServiceNow INC)'],['dev-gate','Harness DEV gate status check must be passing']]},
+  'qa-sonar':{title:'SQ scan/Semgrep — QA build',rows:[['scope','Full scan on qa branch — catches regressions since dev scan'],['fail','Pipeline stops — no QA build, no GAR-QA push'],['on fail','Email to app team + QA lead. No ServiceNow INC ticket created at QA stage.']]},
+  'qa-build':{title:'Build QA package',rows:[['output','Docker image tagged qa-vX.Y-gitsha — separate from DEV image']]},
+  'qa-gar':{title:'Push to GAR-QA',rows:[['repo','Separate GAR repository: gar.io/project/app-qa'],['tag','Immutable tag: qa-vX.Y-gitsha']]},
+  'qa-approval':{title:'QA lead approval gate',rows:[['approver','QA Lead (or named delegate) in Harness approval UI'],['timeout','72 hours — email escalation to QA manager at 48h'],['reject','Rejection requires written reason — logged in Harness audit trail']]},
+  'qa-deploy':{title:'Deploy to QA',rows:[['method','helm upgrade in QA K8s namespace — isolated from DEV and PROD']]},
+  'qa-tests':{title:'Full QA test suite',rows:[['types','Functional regression, integration, API contract, performance baseline'],['gate','All regression must pass; perf must not regress > 10%']]},
+  'qa-gate':{title:'QA gate',rows:[['pass','Full suite green → team can open PR from qa to main'],['fail','QA lead triggers rollback → ServiceNow INC + email → fix in dev → rebuild all envs']]},
+  'qa-rb':{title:'Rollback at QA',rows:[['trigger','Regression failure, perf breach, or QA lead rejection'],['notify','ServiceNow P2 INC + email to app team + QA lead']]},
+  'prod-pr':{title:'PR qa → main',rows:[['prerequisite','QA gate must have passed — Harness + GitHub status check confirms this'],['approvals','Approval required by GitHub Ruleset: Change mgmt']]},
+  'prod-gh-rule':{title:'GitHub Ruleset — main branch',rows:[['pr','PR required from qa branch only — no direct push ever'],['checks','SonarQube gate + container scan + Harness OPA + QA gate status'],['lock','Branch locked by Harness during active PROD deploy']]},
+  'prod-sonar':{title:'SQ scan/Semgrep — PROD build',rows:[['scope','Full scan on main branch — final quality gate before production'],['fail','Pipeline stops — no PROD build, no GAR-PROD push'],['on fail','ServiceNow P1 INC + email to Eng lead + app team + Change mgmt']]},
+  'prod-build':{title:'Build PROD package',rows:[['output','Docker image tagged prod-vX.Y-gitsha — separate from DEV and QA images']]},
+  'prod-gar':{title:'Push to GAR-PROD',rows:[['repo','Separate GAR repository: gar.io/project/app-prod'],['signing','Cosign KMS-key signed — signature verified before deploy']]},
+  'prod-opa1':{title:'Harness OPA: container scan pass',rows:[['policy','artifact.scanResult.critical == 0'],['note','First Harness OPA check — no OPA runs at DEV or QA']]},
+  'prod-opa2':{title:'Harness OPA: QA gate on record',rows:[['policy','qa.testSuite.status == "passed" AND qa.approver.count >= 1'],['block','Pipeline halts if QA stage was skipped or failed']]},
+  'prod-opa3':{title:'Harness OPA: deploy window + tag + registry',rows:[['window','Mon–Thu 10:00–15:00 UTC'],['tag','image.tag must match prod-v[0-9]+.*'],['override','Emergency: ServiceNow CHG ticket required']]},
+  'prod-approval':{title:'Production approval gate',rows:[['approvers','Change Management representative'],['count','1 approver required before canary starts'],['timeout','48 hours — email escalation at 24h']]},
+  'prod-canary':{title:'Canary deployment',rows:[['p1','5% traffic → 10 min → error rate + p99 check'],['p2','25% traffic → 15 min → same checks'],['p3','100% traffic → final health check → verify step'],['rollback','Auto-rollback if error rate > 1% or p99 > baseline + 20%']]},
+  'prod-verify':{title:'PROD verification',rows:[['checks','Error rate < 0.1%, p99 within threshold, pod restarts == 0'],['window','15-minute observation window before marking SUCCEEDED'],['on fail','Auto-rollback + ServiceNow P1 INC + email']]},
+  'prod-rb':{title:'Rollback at PROD',rows:[['trigger','Canary error rate breach, p99 spike, or failed verify step'],['notify','ServiceNow P1 INC + email to Eng lead, app team, Change mgmt'],['approvals','Fresh approval required for the new PROD deploy']]},
+  'snow-detail':{title:'ServiceNow INC + email — full detail',rows:[['dev-qa','DEV / QA SonarQube failures: email notification only — no ServiceNow INC ticket created'],['prod','PROD SonarQube failure: P1 INC auto-created via Harness ServiceNow plugin + email'],['test fails','DEV test rollback = P3 INC · QA test rollback = P2 INC · PROD canary rollback = P1 INC'],['email','App team + pipeline owner (DEV) · + QA lead (QA) · + Eng lead + Change mgmt (PROD)'],['auto-close','INC auto-closed when pipeline re-runs and all gates pass']]},
+  'rb-fail':{title:'Failure at any environment',rows:[['dev','Smoke test failure → auto-rollback → ServiceNow P3 INC + email'],['qa','Test failure or rejection → rollback → ServiceNow P2 INC + email'],['prod','Canary error breach → auto-rollback → ServiceNow P1 INC + email']]},
+  'rb-rollback':{title:'Rollback triggered',rows:[['dev','Harness auto-rollback — previous GAR-DEV image restored'],['qa','Harness UI manual trigger by QA lead — previous GAR-QA image restored'],['prod','Harness auto on canary breach — previous GAR-PROD image restored']]},
+  'rb-snow':{title:'ServiceNow INC raised on rollback',rows:[['fields','Environment, trigger reason, rolled-back image digest, timestamp, pipeline URL'],['close','INC closed when fix fully deploys and all gates pass']]},
+  'rb-fix':{title:'Fix in feat/* branch',rows:[['branch','fix/INC-ID-short-desc — references the ServiceNow INC ticket number'],['source','Branch cut from current dev branch HEAD']]},
+  'rb-pr-dev':{title:'Fix PR → dev branch',rows:[['process','Full PR process: CODEOWNER approval required — no shortcuts']]},
+  'rb-dev-build':{title:'New DEV build after fix',rows:[['output','New image: dev-vX.Y-newsha pushed to GAR-DEV'],['tests','Full smoke test suite re-runs — must pass before PR to QA allowed']]},
+  'rb-qa-build':{title:'PR to QA → new QA build',rows:[['output','New image: qa-vX.Y-newsha pushed to GAR-QA'],['approval','QA lead approval required again — no carry-over']]},
+  'rb-prod-build':{title:'PR to PROD → new PROD build',rows:[['output','New image: prod-vX.Y-newsha pushed to GAR-PROD'],['approvals','Fresh approval required — OPA policies run again on the new image']]},
+  'rb-inc-close':{title:'ServiceNow INC auto-closed',rows:[['trigger','Canary completes successfully and verify step passes'],['action','Harness ServiceNow plugin sets INC to Resolved']]},
+  'b-main':{title:'main branch',rows:[['role','PROD source of truth — triggers PROD build + GAR-PROD push on merge']]},
+  'b-qa':{title:'qa branch',rows:[['role','QA source of truth — triggers QA build + GAR-QA push on merge'],['long-lived','Persistent branch — not deleted after merge']]},
+  'b-dev':{title:'dev branch',rows:[['role','Integration branch — triggers DEV build + GAR-DEV push + SQ scan on merge'],['long-lived','Persistent branch — never deleted']]},
+  'b-feat':{title:'feat/* branch',rows:[['no sonar','Explicitly excluded from SonarQube — no scan ever'],['target','PR to dev branch only']]},
+  'b-fix':{title:'fix/* branch',rows:[['naming','fix/INC-ID-short-desc — must reference the open ServiceNow INC'],['target','PR to dev → triggers full rebuild cycle']]},
+  'b-hotfix':{title:'hotfix/* branch',rows:[['target','PR to dev AND PR to main simultaneously'],['note','Must still pass SonarQube and container scan — no gate bypass']]},
+  'flow-feat':{title:'Feature branch flow',rows:[['step1','Developer creates feat/INC-123 from dev branch HEAD'],['step2','Code, local tests — no Sonar, no CI, no deploy on the feat/* branch'],['step3','PR opened to dev → CODEOWNER review → merge'],['step4','Merge fires Harness DEV build → first SQ scan → DEV deploy + tests']]},
+  'flow-dev':{title:'dev branch flow',rows:[['step1','Merge from feat/* fires Harness pipeline'],['step2','SQ scan — gate fail = email (no INC) + pipeline stop'],['step3','Build DEV Docker image → container scan → push to GAR-DEV'],['step4','Deploy DEV → smoke tests → DEV gate check']]},
+  'flow-qa':{title:'qa branch flow',rows:[['step1','PR dev→qa opened after DEV gate pass'],['step2','SQ scan on qa branch — fail = email only (no INC)'],['step3','QA lead approval → deploy QA → regression + perf tests → QA gate']]},
+  'flow-prod':{title:'main branch flow',rows:[['step1','PR qa→main opened after QA gate pass'],['step2','SQ scan on main — fail = P1 ServiceNow INC + email'],['step3','Harness OPA: 6 policy checks → approval → canary → verify']]},
+  'flow-naming':{title:'Naming conventions',rows:[['feat','feat/INC-123-add-stripe-webhook'],['fix','fix/INC-456-null-pointer-on-login'],['hotfix','hotfix/INC-789-payment-timeout'],['persistent','dev · qa · main — never deleted, never renamed']]},
+  'gh-main-pr':{title:'main: require PR',rows:[['setting','PR required from qa branch only — no direct push for anyone including admins']]},
+  'gh-main-2ap':{title:'main: required approvals',rows:[['count','2 required — Engineering Lead and Change Management representative']]},
+  'gh-main-checks':{title:'main: required status checks',rows:[['checks','sonarqube/quality-gate · harness/container-scan · harness/opa-policy · harness/qa-gate-pass']]},
+  'gh-main-lock':{title:'main: branch lock during deploy',rows:[['when','Harness step locks main at start of PROD canary deploy']]},
+  'gh-qa-pr':{title:'qa: require PR from dev',rows:[['setting','PR from dev only — hotfix/* allowed with change board override']]},
+  'gh-qa-approval':{title:'qa: 1 approval',rows:[['approver','QA lead or CODEOWNER for changed paths']]},
+  'gh-qa-sonar':{title:'qa: SonarQube check',rows:[['on fail','Email only — no ServiceNow INC at QA stage']]},
+  'gh-qa-dev-gate':{title:'qa: DEV gate status check',rows:[['check','harness/dev-gate-pass — Harness writes this status after DEV smoke tests pass']]},
+  'gh-dev-pr':{title:'dev: require PR',rows:[['sources','feat/*, fix/*, hotfix/* only — no direct push']]},
+  'gh-dev-codeowner':{title:'dev: CODEOWNER approval',rows:[['file','/.github/CODEOWNERS maps paths to owning teams']]},
+  'h-dev-trigger':{title:'Harness DEV trigger',rows:[['event','Push webhook on dev branch merge']]},
+  'h-dev-sonar':{title:'Harness: SQ scan at DEV',rows:[['on fail','Email notification only — no ServiceNow INC ticket. Pipeline aborts.']]},
+  'h-dev-build':{title:'Harness: DEV build step',rows:[['output','dev-vX.Y-gitsha tagged image']]},
+  'h-dev-scan':{title:'Harness: DEV container scan',rows:[['threshold','CRITICAL = fail; HIGH = warning']]},
+  'h-dev-gar':{title:'Harness: GAR-DEV push',rows:[['auth','Harness SA with write role on GAR-DEV only']]},
+  'h-dev-deploy':{title:'Harness: DEV deploy step',rows:[['auto-rollback','Rollback step on health check failure — fires ServiceNow INC']]},
+  'h-dev-test':{title:'Harness: DEV test step',rows:[['on fail','Auto-rollback → ServiceNow P3 INC raised → pipeline stops']]},
+  'h-qa-trigger':{title:'Harness QA trigger',rows:[['event','Push webhook on qa branch merge (from dev PR)']]},
+  'h-qa-sonar':{title:'Harness: SQ scan at QA',rows:[['on fail','Email notification only — no ServiceNow INC ticket. Pipeline aborts.']]},
+  'h-qa-build':{title:'Harness: QA build step',rows:[['output','qa-vX.Y-gitsha tagged image — separate from DEV image']]},
+  'h-qa-gar':{title:'Harness: GAR-QA push',rows:[['auth','Harness SA with write role on GAR-QA only — no cross-env access']]},
+  'h-qa-approval':{title:'Harness: QA approval step',rows:[['timeout','72 hours — email escalation to QA manager at 48h']]},
+  'h-qa-deploy':{title:'Harness: QA deploy step',rows:[['rollback','Manual or auto-rollback — ServiceNow INC on failure']]},
+  'h-qa-test':{title:'Harness: QA test step',rows:[['record','Gate result stored as pipeline output variable — OPA reads this at PROD']]},
+  'h-prod-trigger':{title:'Harness PROD trigger',rows:[['event','Push webhook on main merge (from qa PR)']]},
+  'h-prod-sonar':{title:'Harness: SQ scan at PROD',rows:[['on fail','P1 ServiceNow INC + email to Eng lead + app team + pipeline aborts']]},
+  'h-prod-build':{title:'Harness: PROD build step',rows:[['output','prod-vX.Y-gitsha tagged image']]},
+  'h-prod-gar':{title:'Harness: GAR-PROD push',rows:[['signing','Cosign with production KMS key']]},
+  'h-prod-opa':{title:'Harness: OPA policy checks',rows:[['1','artifact.scanResult.critical == 0'],['2','sonar.qualityGate.status == OK on main'],['3','qa.testSuite.status == passed AND qa.approver.count >= 1'],['4','image.tag matches prod-v[0-9]+.*'],['5','image.registry == approved GAR-PROD repo'],['6','deployWindow: Mon–Thu 10:00–15:00 UTC']]},
+  'h-prod-approval':{title:'Harness: PROD approval step',rows:[['count','Change Management representative approval'],['timeout','48 hours — email escalation at 24h']]},
+  'h-prod-canary':{title:'Harness: canary deploy step',rows:[['strategy','5%→25%→100% with Argo Rollouts or Istio'],['rollback','Auto-rollback on breach + P1 ServiceNow INC']]},
+  'opa-scan':{title:'OPA: container scan pass',rows:[['rego','artifact.scanResult.critical == 0'],['enforced','PROD only — not DEV or QA']]},
+  'opa-sonar':{title:'OPA: SonarQube gate',rows:[['rego','sonar.qualityGate.status == "OK"']]},
+  'opa-qa-pass':{title:'OPA: QA gate on record',rows:[['rego','qa.testSuite.status == "passed" AND qa.approver.count >= 1']]},
+  'opa-tag':{title:'OPA: image tag format',rows:[['blocked','"latest", "dev-*", and "qa-*" tags blocked in PROD']]},
+  'opa-registry':{title:'OPA: GAR-PROD origin',rows:[['rego','image.registry == "gar.io/project/app-prod"']]},
+  'opa-window':{title:'OPA: deploy window',rows:[['window','Mon–Thu 10:00–15:00 UTC'],['override','ServiceNow CHG ticket required — emergency only']]},
+  'opa-approvals':{title:'OPA: approval counts',rows:[['dev','0 — fully automated'],['qa','1 — QA Lead or delegate'],['prod','1 — Change Management representative']]},
+  'sn-dev-sonar':{title:'DEV SonarQube failure',rows:[['action','Email to app team + pipeline owner. No ServiceNow INC ticket created at DEV stage.']]},
+  'sn-qa-sonar':{title:'QA SonarQube failure',rows:[['action','Email to app team + QA lead. No ServiceNow INC ticket created at QA stage.']]},
+  'sn-prod-sonar':{title:'PROD SonarQube failure',rows:[['priority','P1 ServiceNow INC'],['email','Eng lead + app team + Change mgmt']]},
+  'sn-dev-test':{title:'DEV test failure',rows:[['priority','P3 ServiceNow INC'],['email','App team']]},
+  'sn-qa-test':{title:'QA test failure',rows:[['priority','P2 ServiceNow INC'],['email','App team + QA lead']]},
+  'sn-prod-fail':{title:'PROD canary rollback',rows:[['priority','P1 ServiceNow INC'],['email','Eng lead + app team + Change mgmt']]},
+  'sn-resolve':{title:'ServiceNow INC auto-resolution',rows:[['trigger','All pipeline stages complete successfully'],['action','Harness ServiceNow plugin sets INC to Resolved']]},
+};
+
+/* ── Release Management detail data ── */
+const DRM={
+  'rm-lifecycle':{title:'Lifecycle coordination',rows:[['role','Release management coordinates software releases from planning through deployment and validation'],['goal','Ensure every release is traceable, controlled, and delivered safely with minimal disruption']]},
+  'rm-governance':{title:'Governance and compliance',rows:[['definition','Governance defines clear rules for release readiness and approval requirements'],['compliance','Ensures processes meet internal standards and regulatory or audit requirements']]},
+  'rm-automation':{title:'Modern automation',rows:[['shift','Modern release management leverages automation to reduce manual coordination and human error'],['tools','Harness, ServiceNow, and quality gate tooling are core components of this modern stack']]},
+  'h-lifecycle':{title:'Harness lifecycle stages alignment',rows:[['stages','Harness focuses on Build, Deploy, and Monitor — the three execution-heavy stages'],['alignment','Each stage maps to a release management checkpoint: build readiness, deployment approval, post-deploy verification']]},
+  'h-build-rm':{title:'Harness build and test automation',rows:[['what','Pipelines automate code checkout, unit testing, SAST scanning, and artifact creation'],['consistency','Every build follows the same steps — no manual variation between runs']]},
+  'h-deploy-rm':{title:'Harness deployment strategies',rows:[['rolling','Rolling updates replace instances gradually — minimises downtime for stateless services'],['canary','Canary sends a small traffic percentage first — progressive validation before full rollout'],['selection','Release management selects the strategy based on risk tolerance and SLA requirements']]},
+  'h-monitor-rm':{title:'Harness monitoring and verification',rows:[['metrics','APM integrations query error rates and p99 latency after deployment'],['decision','Verification results feed directly into rollback triggers or release sign-off']]},
+  'flow-planning':{title:'Release planning integration',rows:[['who','Release managers define what goes into a release, which teams are involved, and target environments'],['output','A structured release plan that maps directly to pipeline stage sequences and approvers']]},
+  'flow-change':{title:'Change approval and readiness',rows:[['gate','Release readiness is assessed before Harness triggers a deployment'],['approval','ServiceNow change records must be in Approved state before Harness OPA allows PROD deploy']]},
+  'flow-pipeline-rm':{title:'Harness pipeline execution',rows:[['trigger','Pipeline runs on merge to branch — fully automated from that point forward'],['governance','Approval steps enforce minimum approver counts and link to ServiceNow CHG records']]},
+  'flow-deploy-rm':{title:'Deploy and verify',rows:[['strategy','Canary selected per environment based on release manager guidance'],['rollback','Automated rollback triggered if error rate or latency breaches configured thresholds']]},
+  'flow-feedback':{title:'Feedback and audit',rows:[['traceability','Every pipeline run produces a full audit trail: who approved, when, what was deployed, what passed'],['loop','Feedback informs the next release plan — metrics surface improvement opportunities']]},
+  'tp-planning':{title:'Touchpoint: release planning integration',rows:[['input','Release management defines components, team responsibilities, and target environments'],['output','These inputs are reflected in Harness pipeline configurations, stage sequences, and environment targets']]},
+  'tp-approval':{title:'Touchpoint: change approval and readiness',rows:[['gate','Harness approval steps pause pipeline execution until authorised approvers confirm readiness'],['compliance','Approval decisions are logged in Harness audit trail and reconciled with ServiceNow CHG records']]},
+  'tp-rollback-rm':{title:'Touchpoint: rollback and validation',rows:[['automated','Harness auto-rollback fires when canary metrics breach defined thresholds'],['analysis','Deployment verification steps capture the state at rollback time for root-cause analysis']]},
+  'sn-system':{title:'ServiceNow as change record system',rows:[['role','ServiceNow is the authoritative system of record for all change and release governance in the enterprise'],['integration','Harness OPA policy checks ServiceNow CHG record status as a mandatory pre-deployment gate for PROD'],['scope','All planned changes must have an approved CHG record before a PROD deployment is permitted'],['traceability','Every PROD deployment maps to a ServiceNow CHG record — providing a single authoritative source of truth']]},
+  'sn-integration-rm':{title:'ServiceNow and Harness pipeline integration',rows:[['mechanism','Harness built-in ServiceNow plugin calls the ServiceNow REST API during pipeline execution'],['checks','Pipeline verifies the CHG record is in Approved status and the correct change window is active'],['incidents','Pipeline failures auto-create ServiceNow INC tickets with failure context, environment, and pipeline run link'],['bidirectional','Harness updates the CHG record on successful deployment — closing the loop between planning and execution']]},
+  'sn-traceability':{title:'End-to-end traceability',rows:[['chain','Every deployment is traceable: code commit → pipeline run → CHG record → approver → deploy timestamp → outcome'],['audit','This chain satisfies audit requirements for regulated industries and enterprise governance frameworks'],['visibility','Release managers and auditors can query the full history from either ServiceNow or Harness'],['incident support','Traceability enables rapid root-cause analysis during incidents — pinpointing exactly what changed and when']]},
+  'sn-benefits':{title:'Benefits of ServiceNow integration',rows:[['manual reduction','Eliminates manual reconciliation between deployment logs and change records'],['audit risk','Lowers audit risk by ensuring every PROD deployment has a corresponding approved change record'],['transparency','All stakeholders — release managers, change board, auditors — see the same deployment record'],['compliance','Supports enterprise compliance requirements by providing documented, approved change evidence for every release']]},
+  'gov-pipelines':{title:'Standardized release pipelines',rows:[['what','Harness CD pipelines enforce consistent release patterns across all application teams and environments'],['controls','Required stages include: unit testing, SonarQube / Semgrep SAST scan, container vulnerability scan, and deployment verification'],['benefit','Consistency eliminates ad-hoc release processes and ensures every deployment meets the same quality bar'],['enforcement','Pipeline templates are centrally managed — teams cannot skip mandatory stages or bypass gates']]},
+  'gov-approvals':{title:'Embedded governance and approvals',rows:[['model','Role-based approvals are embedded directly into pipeline stages — governance is not a separate process'],['environment-specific','DEV deploys automatically; QA requires QA lead approval; PROD requires Change Management sign-off'],['risk-based','Approval requirements scale with deployment risk — higher environments demand more scrutiny'],['context','Approvers see full deployment context: scan results, test outcomes, SonarQube status, and change details'],['audit','Every approval decision — including rejections and reasons — is logged in the Harness audit trail']]},
+  'gov-audit':{title:'Comprehensive audit trails',rows:[['scope','Harness captures every pipeline event: who triggered, who approved, what was deployed, when, and the outcome'],['details','Audit entries include: approver identity, timestamp, image digest, gate results, environment, and pipeline run link'],['compliance','Audit trails satisfy enterprise compliance requirements for regulated industries and internal governance reviews'],['access','Audit data is queryable in Harness UI and exportable for external compliance tooling or security reviews'],['immutable','Audit records cannot be modified after the fact — providing a trustworthy source of truth for incident investigations']]},
+  'out-speed':{title:'Faster, safer releases',rows:[['speed','Automation removes manual handoffs between build, test, and deploy stages'],['reliability','Repeatable pipelines eliminate environment-specific differences that cause production incidents']]},
+  'out-visibility':{title:'Improved visibility and audit',rows:[['real-time','Pipeline dashboards give release managers live deployment status across all environments'],['compliance','Audit-ready records are produced automatically — no manual documentation required']]},
+  'out-collab':{title:'Enhanced team collaboration',rows:[['unified','Engineering, security, and release teams operate from the same pipeline and approval workflow'],['predictability','Consistent process improves delivery predictability']]},
+  'tk-roles':{title:'Complementary roles',rows:[['harness','Manages technical release execution — builds, scans, deploys, verifies, and rolls back automatically'],['release mgmt','Manages governance and risk — defines standards, approves changes, and ensures compliance']]},
+  'tk-efficiency':{title:'Integrated efficiency',rows:[['automation','Pipeline automation enforces quality gates, approval requirements, and deployment standards consistently'],['no compromise','Control is maintained — in fact strengthened — because automation is more consistent than manual processes']]},
+  'tk-strategic':{title:'Strategic enabler role',rows:[['shift','With automation handling coordination, release managers focus on risk assessment and strategic planning'],['value','Higher-value activities: release scope decisions, cross-team alignment, process improvement']]},
+  'tk-flow':{title:'Flow and compliance support',rows:[['flow','Harness pipelines ensure code flows efficiently from commit to production without unnecessary delays'],['compliance','The combination satisfies enterprise DevOps compliance requirements']]},
+};
+
+function d(id){
+  /* try pipeline data first, then RM data */
+  const e=D[id]||DRM[id];if(!e)return;
+  /* route to the correct panel based on which section is visible */
+  const rmActive=document.getElementById('section-release-mgmt').classList.contains('active');
+  if(rmActive&&DRM[id]){
+    document.getElementById('dp-rm-t').textContent=e.title;
+    document.getElementById('dp-rm-b').innerHTML=e.rows.map(r=>`<div class="dr"><span class="dt">${r[0]}</span><span class="dd">${r[1]}</span></div>`).join('');
+    const p=document.getElementById('dp-rm');
+    p.classList.add('open');
+    p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  } else {
+    document.getElementById('dp-t').textContent=e.title;
+    document.getElementById('dp-b').innerHTML=e.rows.map(r=>`<div class="dr"><span class="dt">${r[0]}</span><span class="dd">${r[1]}</span></div>`).join('');
+    const p=document.getElementById('dp');
+    p.classList.add('open');
+    p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+}
+
+/* RM cards call dRM explicitly */
+function dRM(id){
+  const e=DRM[id];if(!e)return;
+  document.getElementById('dp-rm-t').textContent=e.title;
+  document.getElementById('dp-rm-b').innerHTML=e.rows.map(r=>`<div class="dr"><span class="dt">${r[0]}</span><span class="dd">${r[1]}</span></div>`).join('');
+  const p=document.getElementById('dp-rm');
+  p.classList.add('open');
+  p.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+/* Wire RM coloured cards to dRM */
+document.querySelectorAll('#section-release-mgmt .coloured-card, #section-release-mgmt .card, #section-release-mgmt .accent-card, #section-release-mgmt .flow-node, #section-release-mgmt .tk-card').forEach(el=>{
+  const orig=el.getAttribute('onclick');
+  if(orig){
+    el.setAttribute('onclick', orig.replace(/^d\(/, 'dRM('));
+  }
+});
 </script>
 </body>
 </html>
